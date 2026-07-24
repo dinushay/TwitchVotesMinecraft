@@ -5,6 +5,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.Sound;
+import org.bukkit.Tag;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
@@ -24,14 +25,8 @@ public final class GameEventManager {
 
     private static final LegacyComponentSerializer SERIALIZER = LegacyComponentSerializer.legacySection();
     private static final List<GameEvent> ALL_EVENTS = new ArrayList<>();
-    private static final EnumSet<Material> LEAVES_MATERIALS = EnumSet.noneOf(Material.class);
 
     static {
-        for (Material m : Material.values()) {
-            if (m.name().endsWith("_LEAVES") || m.name().equals("LEAVES")) {
-                LEAVES_MATERIALS.add(m);
-            }
-        }
         // --- SIMPLE EVENTS ---
         
         // 1. Summon 10 Zombies
@@ -373,7 +368,7 @@ public final class GameEventManager {
                     for (int y = -radius; y <= radius; y++) {
                         for (int z = -radius; z <= radius; z++) {
                             Block block = world.getBlockAt(cx + x, cy + y, cz + z);
-                            if (LEAVES_MATERIALS.contains(block.getType())) {
+                            if (Tag.LEAVES.isTagged(block.getType())) {
                                 block.setType(Material.AIR);
                             }
                         }
