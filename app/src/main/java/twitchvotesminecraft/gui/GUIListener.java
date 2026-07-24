@@ -82,8 +82,8 @@ public class GUIListener implements Listener {
                     return;
                 }
 
-                // Preserve mode: "chat" in config.yml
-                plugin.getConfig().set("twitch.default-settings.mode", "chat");
+                // Ensure legacy mode key is removed if present
+                plugin.getConfig().set("twitch.default-settings.mode", null);
 
                 plugin.getConfig().set("twitch.default-settings.interval-seconds", intervalSec);
                 plugin.getConfig().set("twitch.default-settings.event-seconds", eventSec);

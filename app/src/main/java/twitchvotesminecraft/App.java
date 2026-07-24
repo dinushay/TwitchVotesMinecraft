@@ -1,6 +1,5 @@
 package twitchvotesminecraft;
 
-import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 import twitchvotesminecraft.auth.TwitchValidator;
 import twitchvotesminecraft.command.TwitchCommand;
@@ -31,11 +30,8 @@ public final class App extends JavaPlugin {
         // 3. Register GUI Event Listener
         getServer().getPluginManager().registerEvents(new GUIListener(this), this);
 
-        // 4. Register Command Executor
-        PluginCommand command = getCommand("twitchvotesminecraft");
-        if (command != null) {
-            command.setExecutor(new TwitchCommand(this));
-        }
+        // 4. Register Command via Paper CommandMap (avoids JavaPlugin#getCommand UnsupportedOperationException)
+        getServer().getCommandMap().register("twitchvotesminecraft", new TwitchCommand(this));
 
         getLogger().info("Twitch credentials validated successfully. TwitchVotesMinecraft enabled.");
     }
