@@ -3,6 +3,7 @@ twitch:
   access-token: ""
   refresh-token: ""
   default-settings:
+    mode: "chat"
     interval-seconds: 90
     event-seconds: 60
     vote-seconds: 30

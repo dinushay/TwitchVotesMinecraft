@@ -14,10 +14,10 @@ public final class ConfigManager {
     public static boolean validateAndRepairDefaultSettings(FileConfiguration config) {
         boolean changed = false;
 
-        // 1. Remove legacy mode setting if present
+        // 1. Ensure mode is strictly "chat" (no poll selection allowed)
         String modePath = "twitch.default-settings.mode";
-        if (config.contains(modePath)) {
-            config.set(modePath, null);
+        if (!config.isString(modePath) || !config.getString(modePath, "").trim().equalsIgnoreCase("chat")) {
+            config.set(modePath, "chat");
             changed = true;
         }
 
