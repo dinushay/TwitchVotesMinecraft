@@ -65,7 +65,7 @@ public class GUIListener implements Listener {
                     holder.setMaxVoteableEvents(Math.max(2, holder.getMaxVoteableEvents() - 1));
                 }
             }
-            case 16 -> { // Confirm & Save
+            case 16 -> { // Confirm & Save -> Start Voting Session
                 int eventSec = holder.getEventSeconds();
                 int voteSec = holder.getVoteSeconds();
                 int intervalSec = holder.getIntervalSeconds();
@@ -91,6 +91,9 @@ public class GUIListener implements Listener {
                 plugin.saveConfig();
                 player.sendMessage(SERIALIZER.deserialize("§a[TwitchVotesMinecraft] Default settings successfully saved to config.yml!"));
                 player.closeInventory();
+
+                // Start the voting session for the configured Twitch channel
+                plugin.startVoteSession(player, holder.getTwitchName());
                 return;
             }
         }
