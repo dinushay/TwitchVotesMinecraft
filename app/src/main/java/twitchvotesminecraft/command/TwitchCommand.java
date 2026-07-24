@@ -36,6 +36,12 @@ public class TwitchCommand extends Command {
             return true;
         }
 
+        // Require OP permission
+        if (!player.isOp()) {
+            player.sendMessage(SERIALIZER.deserialize("§c[TwitchVotesMinecraft] You must be a server Operator (OP) to use this command."));
+            return true;
+        }
+
         if (args.length < 1) {
             player.sendMessage(SERIALIZER.deserialize("§cUsage: /" + commandLabel + " <twitch-name | cancel>"));
             return true;

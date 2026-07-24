@@ -45,6 +45,7 @@ public class VoteSession {
 
     private BukkitTask activeTask;
     private boolean active = true;
+    private boolean isVotingPhase = false;
 
     public VoteSession(App plugin, Player player, String channel) {
         this.plugin = plugin;
@@ -67,6 +68,7 @@ public class VoteSession {
 
     public void stop() {
         active = false;
+        isVotingPhase = false;
         if (chatClient != null) {
             chatClient.disconnect();
         }
@@ -82,18 +84,19 @@ public class VoteSession {
         }
     }
 
-    // Phase 1: Voting Phase
+    // Phase 1: Voting Phase (Scoreboard & BossBar active)
     private void startVotingPhase() {
         if (!active || !player.isOnline()) {
             stop();
             return;
         }
 
+        isVotingPhase = true;
         userVotes.clear();
         winningEvent = null;
         currentOptions = GameEventManager.getRandomEvents(maxVoteableEvents);
 
-        // Setup Scoreboard
+        // Setup Scoreboard ONLY for Voting Phase
         scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
         objective = scoreboard.registerNewObjective("twitchvote", Criteria.DUMMY, SERIALIZER.deserialize("§5§lTwitch Vote"));
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
@@ -141,6 +144,11 @@ public class VoteSession {
     private void finishVotingPhase() {
         if (!active || !player.isOnline()) return;
 
+        isVotingPhase = false;
+
+        // Hide Scoreboard immediately after voting phase ends
+        player.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
+
         int totalVotes = userVotes.size();
         int[] counts = new int[currentOptions.size()];
 
@@ -181,23 +189,17 @@ public class VoteSession {
         }
     }
 
-    // Phase 2: Event Duration Phase (if non-instant event)
+    // Phase 2: Event Duration Phase (BossBar only, no Scoreboard)
     private void startEventActivePhase() {
         if (!active || !player.isOnline()) {
             stop();
             return;
         }
 
+        isVotingPhase = false;
         bossBar.setColor(BarColor.GREEN);
         bossBar.setTitle("§e§lEvent Active (§a" + winningEvent.getName() + "§e): §f" + eventSeconds + "s");
         bossBar.setProgress(1.0);
-
-        // Update Scoreboard to show active winner
-        for (String entry : scoreboard.getEntries()) {
-            scoreboard.resetScores(entry);
-        }
-        objective.getScore("§aWinner: §e" + winningEvent.getName()).setScore(2);
-        objective.getScore("§7Active Duration: §f" + eventSeconds + "s").setScore(1);
 
         if (activeTask != null) activeTask.cancel();
 
@@ -224,13 +226,14 @@ public class VoteSession {
         }.runTaskTimer(plugin, 20L, 20L);
     }
 
-    // Phase 3: Cooldown Phase until next voting round
+    // Phase 3: Cooldown Phase until next voting round (BossBar only, no Scoreboard)
     private void startCooldownPhase() {
         if (!active || !player.isOnline()) {
             stop();
             return;
         }
 
+        isVotingPhase = false;
         int cooldownSeconds = intervalSeconds - (voteSeconds + (winningEvent != null && !winningEvent.isInstant() ? eventSeconds : 0));
         if (cooldownSeconds <= 0) {
             startVotingPhase();
@@ -240,11 +243,6 @@ public class VoteSession {
         bossBar.setColor(BarColor.BLUE);
         bossBar.setTitle("§b§lNext voting in: §e" + cooldownSeconds + "s");
         bossBar.setProgress(1.0);
-
-        for (String entry : scoreboard.getEntries()) {
-            scoreboard.resetScores(entry);
-        }
-        objective.getScore("§bNext Vote In: §e" + cooldownSeconds + "s").setScore(1);
 
         if (activeTask != null) activeTask.cancel();
 
@@ -272,7 +270,7 @@ public class VoteSession {
     }
 
     private void handleChatMessage(String username, String message) {
-        if (!active) return;
+        if (!active || !isVotingPhase) return;
 
         String msg = message.trim();
         try {
@@ -285,7 +283,7 @@ public class VoteSession {
     }
 
     private void updateScoreboard() {
-        if (!active || objective == null || currentOptions.isEmpty()) return;
+        if (!active || !isVotingPhase || objective == null || currentOptions.isEmpty()) return;
 
         int totalVotes = userVotes.size();
         int[] counts = new int[currentOptions.size()];
