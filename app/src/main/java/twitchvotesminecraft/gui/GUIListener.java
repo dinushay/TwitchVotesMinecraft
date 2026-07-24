@@ -106,6 +106,11 @@ public class GUIListener implements Listener {
                 plugin.startVoteSession(player, holder.getTwitchName());
                 return;
             }
+            case 26 -> { // Close Button
+                player.playSound(player.getLocation(), org.bukkit.Sound.BLOCK_CHEST_CLOSE, 1.0f, 1.0f);
+                player.closeInventory();
+                return;
+            }
         }
 
         SettingsGUI.refreshInventory(holder);

@@ -38,7 +38,9 @@ public final class SettingsGUI {
     public static void refreshInventory(SettingsGUIHolder holder) {
         Inventory inv = holder.getInventory();
 
-        ItemStack bg = createItem(Material.GRAY_STAINED_GLASS_PANE, " ", null);
+        boolean isValid = holder.getEventSeconds() + holder.getVoteSeconds() <= holder.getIntervalSeconds();
+        Material bgMaterial = isValid ? Material.GRAY_STAINED_GLASS_PANE : Material.RED_STAINED_GLASS_PANE;
+        ItemStack bg = createItem(bgMaterial, " ", null);
         for (int i = 0; i < inv.getSize(); i++) {
             inv.setItem(i, bg);
         }
@@ -76,7 +78,6 @@ public final class SettingsGUI {
         inv.setItem(13, maxEventsItem);
 
         // Slot 16: Confirm Button
-        boolean isValid = holder.getEventSeconds() + holder.getVoteSeconds() <= holder.getIntervalSeconds();
         ItemStack confirmItem;
         if (isValid) {
             confirmItem = createItem(
@@ -92,6 +93,14 @@ public final class SettingsGUI {
             );
         }
         inv.setItem(16, confirmItem);
+
+        // Slot 26: Close Button
+        ItemStack closeItem = createItem(
+                Material.BARRIER,
+                "§c§lClose",
+                List.of("§7Click to close without saving.")
+        );
+        inv.setItem(26, closeItem);
     }
 
     private static ItemStack createItem(Material material, String name, List<String> lore) {
