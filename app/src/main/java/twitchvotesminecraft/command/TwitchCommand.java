@@ -1,6 +1,5 @@
 package twitchvotesminecraft.command;
 
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -14,7 +13,6 @@ import java.util.regex.Pattern;
 
 public class TwitchCommand extends Command {
 
-    private static final LegacyComponentSerializer SERIALIZER = LegacyComponentSerializer.legacySection();
     private static final Pattern TWITCH_NAME_PATTERN = Pattern.compile("^[a-zA-Z0-9_]{4,25}$");
 
     private final App plugin;
@@ -32,18 +30,18 @@ public class TwitchCommand extends Command {
     @Override
     public boolean execute(CommandSender sender, String commandLabel, String[] args) {
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(SERIALIZER.deserialize("§cOnly in-game players can execute this command."));
+            sender.sendMessage(plugin.getMessageManager().getComponent("general.only-in-game"));
             return true;
         }
 
         // Require OP permission
         if (!player.isOp()) {
-            player.sendMessage(SERIALIZER.deserialize("§c[TwitchVotesMinecraft] You must be a server Operator (OP) to use this command."));
+            player.sendMessage(plugin.getMessageManager().getComponent("general.must-be-op"));
             return true;
         }
 
         if (args.length < 1) {
-            player.sendMessage(SERIALIZER.deserialize("§cUsage: /" + commandLabel + " <twitch-name | cancel>"));
+            player.sendMessage(plugin.getMessageManager().getComponent("general.usage", java.util.Map.of("%cmd%", commandLabel)));
             return true;
         }
 
@@ -53,20 +51,20 @@ public class TwitchCommand extends Command {
         if (target.equalsIgnoreCase("cancel")) {
             boolean stopped = plugin.stopVoteSession(player);
             if (stopped) {
-                player.sendMessage(SERIALIZER.deserialize("§a[TwitchVotesMinecraft] Active Twitch voting session cancelled."));
+                player.sendMessage(plugin.getMessageManager().getComponent("session.cancelled"));
             } else {
-                player.sendMessage(SERIALIZER.deserialize("§c[TwitchVotesMinecraft] You do not have an active voting session to cancel."));
+                player.sendMessage(plugin.getMessageManager().getComponent("session.no-active-session"));
             }
             return true;
         }
 
         // Validate username syntax
         if (!TWITCH_NAME_PATTERN.matcher(target).matches()) {
-            player.sendMessage(SERIALIZER.deserialize("§c[TwitchVotesMinecraft] Invalid Twitch username syntax! Usernames must be 4-25 alphanumeric characters or underscores."));
+            player.sendMessage(plugin.getMessageManager().getComponent("general.invalid-syntax"));
             return true;
         }
 
-        player.sendMessage(SERIALIZER.deserialize("§e[TwitchVotesMinecraft] Verifying Twitch channel '" + target + "'..."));
+        player.sendMessage(plugin.getMessageManager().getComponent("general.verifying", java.util.Map.of("%channel%", target)));
 
         // Asynchronously check if channel exists on Twitch via Helix API
         Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
@@ -76,7 +74,7 @@ public class TwitchCommand extends Command {
                 if (!player.isOnline()) return;
 
                 if (!exists) {
-                    player.sendMessage(SERIALIZER.deserialize("§c[TwitchVotesMinecraft] Twitch channel '" + target + "' does not exist!"));
+                    player.sendMessage(plugin.getMessageManager().getComponent("general.channel-not-found", java.util.Map.of("%channel%", target)));
                     return;
                 }
 

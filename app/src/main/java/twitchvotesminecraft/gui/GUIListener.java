@@ -1,6 +1,5 @@
 package twitchvotesminecraft.gui;
 
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -10,7 +9,6 @@ import twitchvotesminecraft.App;
 
 public class GUIListener implements Listener {
 
-    private static final LegacyComponentSerializer SERIALIZER = LegacyComponentSerializer.legacySection();
     private final App plugin;
 
     public GUIListener(App plugin) {
@@ -81,10 +79,12 @@ public class GUIListener implements Listener {
 
                 if (sum > intervalSec) {
                     player.playSound(player.getLocation(), org.bukkit.Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
-                    player.sendMessage(SERIALIZER.deserialize(
-                            "§c[TwitchVotesMinecraft] Cannot save! Event Seconds (" + eventSec + "s) + Vote Seconds (" + voteSec + "s) = "
-                            + sum + "s, which exceeds Interval Seconds (" + intervalSec + "s)."
-                    ));
+                    player.sendMessage(plugin.getMessageManager().getComponent("gui.cannot-save-msg", java.util.Map.of(
+                            "%event%", String.valueOf(eventSec),
+                            "%vote%", String.valueOf(voteSec),
+                            "%sum%", String.valueOf(sum),
+                            "%interval%", String.valueOf(intervalSec)
+                    )));
                     return;
                 }
 
@@ -99,7 +99,7 @@ public class GUIListener implements Listener {
 
                 plugin.saveConfig();
                 player.playSound(player.getLocation(), org.bukkit.Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.0f);
-                player.sendMessage(SERIALIZER.deserialize("§a[TwitchVotesMinecraft] Default settings successfully saved to config.yml!"));
+                player.sendMessage(plugin.getMessageManager().getComponent("gui.saved-msg"));
                 player.closeInventory();
 
                 // Start the voting session for the configured Twitch channel
@@ -113,6 +113,6 @@ public class GUIListener implements Listener {
             }
         }
 
-        SettingsGUI.refreshInventory(holder);
+        SettingsGUI.refreshInventory(plugin, holder);
     }
 }
