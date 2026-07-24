@@ -6,6 +6,7 @@ import twitchvotesminecraft.auth.TwitchValidator;
 import twitchvotesminecraft.command.TwitchCommand;
 import twitchvotesminecraft.config.ConfigManager;
 import twitchvotesminecraft.gui.GUIListener;
+import twitchvotesminecraft.listener.PlayerEventListener;
 import twitchvotesminecraft.vote.VoteSession;
 
 import java.util.Map;
@@ -36,8 +37,9 @@ public final class App extends JavaPlugin {
             return;
         }
 
-        // 3. Register GUI Event Listener
+        // 3. Register Event Listeners
         getServer().getPluginManager().registerEvents(new GUIListener(this), this);
+        getServer().getPluginManager().registerEvents(new PlayerEventListener(this), this);
 
         // 4. Register Command via Paper CommandMap
         getServer().getCommandMap().register("twitchvotesminecraft", new TwitchCommand(this));
