@@ -55,20 +55,41 @@ public class GUIListener implements Listener {
                     holder.setEventSeconds(Math.max(15, holder.getEventSeconds() - 5));
                 }
             }
-            case 13 -> { // Max Voteable Events (2 - 5)
+            case 13 -> { // Vote Seconds (15 - 120)
+                if (click.isLeftClick()) {
+                    holder.setVoteSeconds(Math.min(120, holder.getVoteSeconds() + 5));
+                } else if (click.isRightClick()) {
+                    holder.setVoteSeconds(Math.max(15, holder.getVoteSeconds() - 5));
+                }
+            }
+            case 14 -> { // Max Voteable Events (2 - 5)
                 if (click.isLeftClick()) {
                     holder.setMaxVoteableEvents(Math.min(5, holder.getMaxVoteableEvents() + 1));
                 } else if (click.isRightClick()) {
                     holder.setMaxVoteableEvents(Math.max(2, holder.getMaxVoteableEvents() - 1));
                 }
             }
-            case 14 -> { // Show Poll in Minecraft
+            case 15 -> { // Show Poll in Minecraft
                 holder.setShowPollInMinecraft(!holder.isShowPollInMinecraft());
             }
             case 16 -> { // Confirm & Save
+                int eventSec = holder.getEventSeconds();
+                int voteSec = holder.getVoteSeconds();
+                int intervalSec = holder.getIntervalSeconds();
+                int sum = eventSec + voteSec;
+
+                if (sum > intervalSec) {
+                    player.sendMessage(SERIALIZER.deserialize(
+                            "§c[TwitchVotesMinecraft] Cannot save! Event Seconds (" + eventSec + "s) + Vote Seconds (" + voteSec + "s) = "
+                            + sum + "s, which exceeds Interval Seconds (" + intervalSec + "s)."
+                    ));
+                    return;
+                }
+
                 plugin.getConfig().set("twitch.default-settings.mode", holder.getMode());
-                plugin.getConfig().set("twitch.default-settings.interval-seconds", holder.getIntervalSeconds());
-                plugin.getConfig().set("twitch.default-settings.event-seconds", holder.getEventSeconds());
+                plugin.getConfig().set("twitch.default-settings.interval-seconds", intervalSec);
+                plugin.getConfig().set("twitch.default-settings.event-seconds", eventSec);
+                plugin.getConfig().set("twitch.default-settings.vote-seconds", voteSec);
                 plugin.getConfig().set("twitch.default-settings.max-voteable-events", holder.getMaxVoteableEvents());
                 plugin.getConfig().set("twitch.default-settings.show-poll-in-minecraft", holder.isShowPollInMinecraft());
 

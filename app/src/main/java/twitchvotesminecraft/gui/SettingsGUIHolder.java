@@ -8,15 +8,17 @@ public class SettingsGUIHolder implements InventoryHolder {
     private String mode;
     private int intervalSeconds;
     private int eventSeconds;
+    private int voteSeconds;
     private int maxVoteableEvents;
     private boolean showPollInMinecraft;
     private Inventory inventory;
 
-    public SettingsGUIHolder(String twitchName, String mode, int intervalSeconds, int eventSeconds, int maxVoteableEvents, boolean showPollInMinecraft) {
+    public SettingsGUIHolder(String twitchName, String mode, int intervalSeconds, int eventSeconds, int voteSeconds, int maxVoteableEvents, boolean showPollInMinecraft) {
         this.twitchName = twitchName;
         this.mode = mode;
         this.intervalSeconds = intervalSeconds;
         this.eventSeconds = eventSeconds;
+        this.voteSeconds = voteSeconds;
         this.maxVoteableEvents = maxVoteableEvents;
         this.showPollInMinecraft = showPollInMinecraft;
     }
@@ -56,6 +58,14 @@ public class SettingsGUIHolder implements InventoryHolder {
 
     public void setEventSeconds(int eventSeconds) {
         this.eventSeconds = eventSeconds;
+    }
+
+    public int getVoteSeconds() {
+        return voteSeconds;
+    }
+
+    public void setVoteSeconds(int voteSeconds) {
+        this.voteSeconds = voteSeconds;
     }
 
     public int getMaxVoteableEvents() {
