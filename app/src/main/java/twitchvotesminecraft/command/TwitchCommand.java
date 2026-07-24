@@ -1,10 +1,12 @@
 package twitchvotesminecraft.command;
 
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import twitchvotesminecraft.App;
+import twitchvotesminecraft.auth.TwitchValidator;
 import twitchvotesminecraft.gui.SettingsGUI;
 
 import java.util.List;
@@ -21,7 +23,7 @@ public class TwitchCommand extends Command {
         super(
             "twitchvotesminecraft",
             "Configures TwitchVotesMinecraft default settings for a given Twitch channel.",
-            "/twitchvotesminecraft <twitch-name>",
+            "/twitchvotesminecraft <twitch-name | cancel>",
             List.of("tvm")
         );
         this.plugin = plugin;
@@ -35,17 +37,47 @@ public class TwitchCommand extends Command {
         }
 
         if (args.length < 1) {
-            player.sendMessage(SERIALIZER.deserialize("§cUsage: /" + commandLabel + " <twitch-name>"));
+            player.sendMessage(SERIALIZER.deserialize("§cUsage: /" + commandLabel + " <twitch-name | cancel>"));
             return true;
         }
 
-        String twitchName = args[0].trim();
-        if (!TWITCH_NAME_PATTERN.matcher(twitchName).matches()) {
-            player.sendMessage(SERIALIZER.deserialize("§c[TwitchVotesMinecraft] Invalid Twitch username! Usernames must be 4-25 alphanumeric characters or underscores."));
+        String target = args[0].trim();
+
+        // Handle cancel subcommand
+        if (target.equalsIgnoreCase("cancel")) {
+            boolean stopped = plugin.stopVoteSession(player);
+            if (stopped) {
+                player.sendMessage(SERIALIZER.deserialize("§a[TwitchVotesMinecraft] Active Twitch voting session cancelled."));
+            } else {
+                player.sendMessage(SERIALIZER.deserialize("§c[TwitchVotesMinecraft] You do not have an active voting session to cancel."));
+            }
             return true;
         }
 
-        SettingsGUI.open(plugin, player, twitchName);
+        // Validate username syntax
+        if (!TWITCH_NAME_PATTERN.matcher(target).matches()) {
+            player.sendMessage(SERIALIZER.deserialize("§c[TwitchVotesMinecraft] Invalid Twitch username syntax! Usernames must be 4-25 alphanumeric characters or underscores."));
+            return true;
+        }
+
+        player.sendMessage(SERIALIZER.deserialize("§e[TwitchVotesMinecraft] Verifying Twitch channel '" + target + "'..."));
+
+        // Asynchronously check if channel exists on Twitch via Helix API
+        Bukkit.getScheduler().runTaskAsynchronously(plugin, () -> {
+            boolean exists = TwitchValidator.checkChannelExists(plugin.getConfig(), target);
+
+            Bukkit.getScheduler().runTask(plugin, () -> {
+                if (!player.isOnline()) return;
+
+                if (!exists) {
+                    player.sendMessage(SERIALIZER.deserialize("§c[TwitchVotesMinecraft] Twitch channel '" + target + "' does not exist!"));
+                    return;
+                }
+
+                SettingsGUI.open(plugin, player, target);
+            });
+        });
+
         return true;
     }
 }

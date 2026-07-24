@@ -38,12 +38,12 @@ public class VoteSession {
     private final Map<String, Integer> userVotes = new ConcurrentHashMap<>();
 
     private List<GameEvent> currentOptions = new ArrayList<>();
+    private GameEvent winningEvent = null;
     private BossBar bossBar;
     private Scoreboard scoreboard;
     private Objective objective;
 
-    private BukkitTask timerTask;
-    private BukkitTask nextRoundTask;
+    private BukkitTask activeTask;
     private boolean active = true;
 
     public VoteSession(App plugin, Player player, String channel) {
@@ -61,8 +61,8 @@ public class VoteSession {
 
     public void start() {
         chatClient.connect();
-        player.sendMessage(SERIALIZER.deserialize("§a[TwitchVotesMinecraft] Connected to Twitch channel #" + channel + ". Starting voting system!"));
-        startNewRound();
+        player.sendMessage(SERIALIZER.deserialize("§a[TwitchVotesMinecraft] Connected to Twitch channel #" + channel + ". Starting voting cycle!"));
+        startVotingPhase();
     }
 
     public void stop() {
@@ -70,11 +70,8 @@ public class VoteSession {
         if (chatClient != null) {
             chatClient.disconnect();
         }
-        if (timerTask != null) {
-            timerTask.cancel();
-        }
-        if (nextRoundTask != null) {
-            nextRoundTask.cancel();
+        if (activeTask != null) {
+            activeTask.cancel();
         }
         if (bossBar != null) {
             bossBar.removeAll();
@@ -85,13 +82,15 @@ public class VoteSession {
         }
     }
 
-    private void startNewRound() {
+    // Phase 1: Voting Phase
+    private void startVotingPhase() {
         if (!active || !player.isOnline()) {
             stop();
             return;
         }
 
         userVotes.clear();
+        winningEvent = null;
         currentOptions = GameEventManager.getRandomEvents(maxVoteableEvents);
 
         // Setup Scoreboard
@@ -101,27 +100,22 @@ public class VoteSession {
         player.setScoreboard(scoreboard);
 
         // Setup BossBar
-        String bossBarTitle = "§d§lVoting ends in: §e" + voteSeconds + "s";
+        String title = "§d§lVoting ends in: §e" + voteSeconds + "s";
         if (bossBar == null) {
-            bossBar = Bukkit.createBossBar(
-                    bossBarTitle,
-                    BarColor.PURPLE,
-                    BarStyle.SOLID
-            );
+            bossBar = Bukkit.createBossBar(title, BarColor.PURPLE, BarStyle.SOLID);
             bossBar.addPlayer(player);
+        } else {
+            bossBar.setColor(BarColor.PURPLE);
         }
-        bossBar.setTitle(bossBarTitle);
+        bossBar.setTitle(title);
         bossBar.setProgress(1.0);
         bossBar.setVisible(true);
 
         updateScoreboard();
 
-        // Start Countdown Task
-        if (timerTask != null) {
-            timerTask.cancel();
-        }
+        if (activeTask != null) activeTask.cancel();
 
-        timerTask = new BukkitRunnable() {
+        activeTask = new BukkitRunnable() {
             int remaining = voteSeconds;
 
             @Override
@@ -134,7 +128,7 @@ public class VoteSession {
                 remaining--;
                 if (remaining <= 0) {
                     cancel();
-                    finishVoting();
+                    finishVotingPhase();
                     return;
                 }
 
@@ -144,10 +138,8 @@ public class VoteSession {
         }.runTaskTimer(plugin, 20L, 20L);
     }
 
-    private void finishVoting() {
-        if (!active || !player.isOnline()) {
-            return;
-        }
+    private void finishVotingPhase() {
+        if (!active || !player.isOnline()) return;
 
         int totalVotes = userVotes.size();
         int[] counts = new int[currentOptions.size()];
@@ -158,50 +150,125 @@ public class VoteSession {
             }
         }
 
-        // Find max votes
         int max = -1;
         for (int count : counts) {
-            if (count > max) {
-                max = count;
-            }
+            if (count > max) max = count;
         }
 
-        // Collect all options tied for max votes
         List<Integer> topIndices = new ArrayList<>();
         for (int i = 0; i < counts.length; i++) {
-            if (counts[i] == max) {
-                topIndices.add(i);
-            }
+            if (counts[i] == max) topIndices.add(i);
         }
 
-        // Pick winner (random tie breaker if multiple)
         int winningIndex = topIndices.get(ThreadLocalRandom.current().nextInt(topIndices.size()));
-        GameEvent winningEvent = currentOptions.get(winningIndex);
+        winningEvent = currentOptions.get(winningIndex);
 
         int winVotes = counts[winningIndex];
         int winPercent = (totalVotes > 0) ? (int) Math.round(((double) winVotes / totalVotes) * 100.0) : 0;
 
-        // Broadcast Winner in Chat
         player.sendMessage(SERIALIZER.deserialize(
                 "§a[TwitchVotesMinecraft] Voting ended! Winner: §e" + winningEvent.getName()
                 + " §a(" + winPercent + "% votes)! Executing now..."
         ));
 
-        // Hide displays
-        if (bossBar != null) {
-            bossBar.setVisible(false);
-        }
-        player.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
-
-        // Execute Winner Event
+        // Execute Winner Event targeted at player
         winningEvent.execute(player, plugin, eventSeconds);
 
-        // Schedule Next Round
-        nextRoundTask = Bukkit.getScheduler().runTaskLater(plugin, () -> {
-            if (active) {
-                startNewRound();
+        if (!winningEvent.isInstant() && eventSeconds > 0) {
+            startEventActivePhase();
+        } else {
+            startCooldownPhase();
+        }
+    }
+
+    // Phase 2: Event Duration Phase (if non-instant event)
+    private void startEventActivePhase() {
+        if (!active || !player.isOnline()) {
+            stop();
+            return;
+        }
+
+        bossBar.setColor(BarColor.GREEN);
+        bossBar.setTitle("§e§lEvent Active (§a" + winningEvent.getName() + "§e): §f" + eventSeconds + "s");
+        bossBar.setProgress(1.0);
+
+        // Update Scoreboard to show active winner
+        for (String entry : scoreboard.getEntries()) {
+            scoreboard.resetScores(entry);
+        }
+        objective.getScore("§aWinner: §e" + winningEvent.getName()).setScore(2);
+        objective.getScore("§7Active Duration: §f" + eventSeconds + "s").setScore(1);
+
+        if (activeTask != null) activeTask.cancel();
+
+        activeTask = new BukkitRunnable() {
+            int remaining = eventSeconds;
+
+            @Override
+            public void run() {
+                if (!active || !player.isOnline()) {
+                    cancel();
+                    return;
+                }
+
+                remaining--;
+                if (remaining <= 0) {
+                    cancel();
+                    startCooldownPhase();
+                    return;
+                }
+
+                bossBar.setTitle("§e§lEvent Active (§a" + winningEvent.getName() + "§e): §f" + remaining + "s");
+                bossBar.setProgress(Math.max(0.0, Math.min(1.0, (double) remaining / eventSeconds)));
             }
-        }, intervalSeconds * 20L);
+        }.runTaskTimer(plugin, 20L, 20L);
+    }
+
+    // Phase 3: Cooldown Phase until next voting round
+    private void startCooldownPhase() {
+        if (!active || !player.isOnline()) {
+            stop();
+            return;
+        }
+
+        int cooldownSeconds = intervalSeconds - (voteSeconds + (winningEvent != null && !winningEvent.isInstant() ? eventSeconds : 0));
+        if (cooldownSeconds <= 0) {
+            startVotingPhase();
+            return;
+        }
+
+        bossBar.setColor(BarColor.BLUE);
+        bossBar.setTitle("§b§lNext voting in: §e" + cooldownSeconds + "s");
+        bossBar.setProgress(1.0);
+
+        for (String entry : scoreboard.getEntries()) {
+            scoreboard.resetScores(entry);
+        }
+        objective.getScore("§bNext Vote In: §e" + cooldownSeconds + "s").setScore(1);
+
+        if (activeTask != null) activeTask.cancel();
+
+        activeTask = new BukkitRunnable() {
+            int remaining = cooldownSeconds;
+
+            @Override
+            public void run() {
+                if (!active || !player.isOnline()) {
+                    cancel();
+                    return;
+                }
+
+                remaining--;
+                if (remaining <= 0) {
+                    cancel();
+                    startVotingPhase();
+                    return;
+                }
+
+                bossBar.setTitle("§b§lNext voting in: §e" + remaining + "s");
+                bossBar.setProgress(Math.max(0.0, Math.min(1.0, (double) remaining / cooldownSeconds)));
+            }
+        }.runTaskTimer(plugin, 20L, 20L);
     }
 
     private void handleChatMessage(String username, String message) {
@@ -218,7 +285,7 @@ public class VoteSession {
     }
 
     private void updateScoreboard() {
-        if (!active || objective == null) return;
+        if (!active || objective == null || currentOptions.isEmpty()) return;
 
         int totalVotes = userVotes.size();
         int[] counts = new int[currentOptions.size()];
@@ -229,7 +296,6 @@ public class VoteSession {
             }
         }
 
-        // Unregister existing entries to prevent score duplication
         for (String entry : scoreboard.getEntries()) {
             scoreboard.resetScores(entry);
         }

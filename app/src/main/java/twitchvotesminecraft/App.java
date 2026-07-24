@@ -8,9 +8,13 @@ import twitchvotesminecraft.config.ConfigManager;
 import twitchvotesminecraft.gui.GUIListener;
 import twitchvotesminecraft.vote.VoteSession;
 
+import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
+
 public final class App extends JavaPlugin {
 
-    private VoteSession activeSession;
+    private final Map<UUID, VoteSession> activeSessions = new ConcurrentHashMap<>();
 
     @Override
     public void onEnable() {
@@ -42,19 +46,31 @@ public final class App extends JavaPlugin {
     }
 
     public synchronized void startVoteSession(Player player, String channel) {
-        if (activeSession != null) {
-            activeSession.stop();
+        stopVoteSession(player);
+        VoteSession session = new VoteSession(this, player, channel);
+        activeSessions.put(player.getUniqueId(), session);
+        session.start();
+    }
+
+    public synchronized boolean stopVoteSession(Player player) {
+        VoteSession session = activeSessions.remove(player.getUniqueId());
+        if (session != null) {
+            session.stop();
+            return true;
         }
-        activeSession = new VoteSession(this, player, channel);
-        activeSession.start();
+        return false;
+    }
+
+    public boolean hasActiveSession(Player player) {
+        return activeSessions.containsKey(player.getUniqueId());
     }
 
     @Override
     public void onDisable() {
-        if (activeSession != null) {
-            activeSession.stop();
-            activeSession = null;
+        for (VoteSession session : activeSessions.values()) {
+            session.stop();
         }
+        activeSessions.clear();
         getLogger().info("TwitchVotesMinecraft disabled.");
     }
 }
