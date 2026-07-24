@@ -92,7 +92,9 @@ public class TwitchChatClient implements WebSocket.Listener {
                         messageConsumer.accept(username, message);
                     }
                 }
-            } catch (Exception ignored) {}
+            } catch (Exception e) {
+                plugin.getLogger().warning("Error parsing IRC line: " + e.getMessage());
+            }
         }
     }
 }
