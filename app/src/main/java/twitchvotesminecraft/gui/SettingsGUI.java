@@ -76,11 +76,21 @@ public final class SettingsGUI {
         inv.setItem(13, maxEventsItem);
 
         // Slot 16: Confirm Button
-        ItemStack confirmItem = createItem(
-                Material.LIME_CONCRETE,
-                "§a§lConfirm & Save",
-                List.of("§7Click to save default settings to config.yml.")
-        );
+        boolean isValid = holder.getEventSeconds() + holder.getVoteSeconds() <= holder.getIntervalSeconds();
+        ItemStack confirmItem;
+        if (isValid) {
+            confirmItem = createItem(
+                    Material.LIME_CONCRETE,
+                    "§a§lConfirm & Save",
+                    List.of("§7Click to save default settings to config.yml.")
+            );
+        } else {
+            confirmItem = createItem(
+                    Material.RED_CONCRETE,
+                    "§c§lCannot Save",
+                    List.of("§7Event + Vote seconds cannot", "§7exceed Interval seconds!")
+            );
+        }
         inv.setItem(16, confirmItem);
     }
 
