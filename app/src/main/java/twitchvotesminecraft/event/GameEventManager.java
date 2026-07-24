@@ -24,8 +24,14 @@ public final class GameEventManager {
 
     private static final LegacyComponentSerializer SERIALIZER = LegacyComponentSerializer.legacySection();
     private static final List<GameEvent> ALL_EVENTS = new ArrayList<>();
+    private static final EnumSet<Material> LEAVES_MATERIALS = EnumSet.noneOf(Material.class);
 
     static {
+        for (Material m : Material.values()) {
+            if (m.name().endsWith("_LEAVES") || m.name().equals("LEAVES")) {
+                LEAVES_MATERIALS.add(m);
+            }
+        }
         // --- SIMPLE EVENTS ---
         
         // 1. Summon 10 Zombies
@@ -358,12 +364,16 @@ public final class GameEventManager {
             @Override
             public void execute(Player player, App plugin, int eventSeconds) {
                 Location center = player.getLocation();
+                org.bukkit.World world = center.getWorld();
+                int cx = center.getBlockX();
+                int cy = center.getBlockY();
+                int cz = center.getBlockZ();
                 int radius = 15;
                 for (int x = -radius; x <= radius; x++) {
                     for (int y = -radius; y <= radius; y++) {
                         for (int z = -radius; z <= radius; z++) {
-                            Block block = center.clone().add(x, y, z).getBlock();
-                            if (block.getType().name().contains("LEAVES")) {
+                            Block block = world.getBlockAt(cx + x, cy + y, cz + z);
+                            if (LEAVES_MATERIALS.contains(block.getType())) {
                                 block.setType(Material.AIR);
                             }
                         }
