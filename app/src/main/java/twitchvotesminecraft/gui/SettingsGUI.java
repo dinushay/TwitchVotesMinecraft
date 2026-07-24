@@ -20,14 +20,13 @@ public final class SettingsGUI {
     private SettingsGUI() {}
 
     public static void open(App plugin, Player player, String twitchName) {
-        String mode = plugin.getConfig().getString("twitch.default-settings.mode", "chat");
-        int intervalSeconds = plugin.getConfig().getInt("twitch.default-settings.interval-seconds", 120);
+        int intervalSeconds = plugin.getConfig().getInt("twitch.default-settings.interval-seconds", 90);
         int eventSeconds = plugin.getConfig().getInt("twitch.default-settings.event-seconds", 60);
         int voteSeconds = plugin.getConfig().getInt("twitch.default-settings.vote-seconds", 30);
         int maxVoteableEvents = plugin.getConfig().getInt("twitch.default-settings.max-voteable-events", 4);
         boolean showPollInMinecraft = plugin.getConfig().getBoolean("twitch.default-settings.show-poll-in-minecraft", false);
 
-        SettingsGUIHolder holder = new SettingsGUIHolder(twitchName, mode, intervalSeconds, eventSeconds, voteSeconds, maxVoteableEvents, showPollInMinecraft);
+        SettingsGUIHolder holder = new SettingsGUIHolder(twitchName, intervalSeconds, eventSeconds, voteSeconds, maxVoteableEvents, showPollInMinecraft);
 
         Component title = SERIALIZER.deserialize("§8Twitch Settings - §5" + twitchName);
         Inventory inv = Bukkit.createInventory(holder, 27, title);
@@ -45,54 +44,46 @@ public final class SettingsGUI {
             inv.setItem(i, bg);
         }
 
-        // Slot 10: Mode
-        ItemStack modeItem = createItem(
-                Material.PAPER,
-                "§eMode: §b" + holder.getMode(),
-                List.of("§7Click to toggle between §fchat §7and §fpoll§7.")
-        );
-        inv.setItem(10, modeItem);
-
-        // Slot 11: Interval Seconds
+        // Slot 10: Interval Seconds
         ItemStack intervalItem = createItem(
                 Material.CLOCK,
                 "§eInterval Seconds: §b" + holder.getIntervalSeconds() + "s",
                 List.of("§7Left-Click: §a+5s §7| Right-Click: §c-5s", "§7Range: 15s - 120s")
         );
-        inv.setItem(11, intervalItem);
+        inv.setItem(10, intervalItem);
 
-        // Slot 12: Event Seconds
+        // Slot 11: Event Seconds
         ItemStack eventItem = createItem(
                 Material.COMPARATOR,
                 "§eEvent Seconds: §b" + holder.getEventSeconds() + "s",
                 List.of("§7Left-Click: §a+5s §7| Right-Click: §c-5s", "§7Range: 15s - 120s")
         );
-        inv.setItem(12, eventItem);
+        inv.setItem(11, eventItem);
 
-        // Slot 13: Vote Seconds
+        // Slot 12: Vote Seconds
         ItemStack voteItem = createItem(
                 Material.REPEATER,
                 "§eVote Seconds: §b" + holder.getVoteSeconds() + "s",
                 List.of("§7Left-Click: §a+5s §7| Right-Click: §c-5s", "§7Range: 15s - 120s")
         );
-        inv.setItem(13, voteItem);
+        inv.setItem(12, voteItem);
 
-        // Slot 14: Max Voteable Events
+        // Slot 13: Max Voteable Events
         ItemStack maxEventsItem = createItem(
                 Material.DIAMOND,
                 "§eMax Voteable Events: §b" + holder.getMaxVoteableEvents(),
                 List.of("§7Left-Click: §a+1 §7| Right-Click: §c-1", "§7Range: 2 - 5")
         );
-        inv.setItem(14, maxEventsItem);
+        inv.setItem(13, maxEventsItem);
 
-        // Slot 15: Show Poll in Minecraft
+        // Slot 14: Show Poll in Minecraft
         String pollState = holder.isShowPollInMinecraft() ? "§aEnabled" : "§cDisabled";
         ItemStack pollItem = createItem(
                 Material.BEACON,
                 "§eShow Poll in Minecraft: " + pollState,
                 List.of("§7Click to toggle ON/OFF.")
         );
-        inv.setItem(15, pollItem);
+        inv.setItem(14, pollItem);
 
         // Slot 16: Confirm Button
         ItemStack confirmItem = createItem(

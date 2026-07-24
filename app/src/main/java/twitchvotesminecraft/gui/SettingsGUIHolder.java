@@ -5,7 +5,6 @@ import org.bukkit.inventory.InventoryHolder;
 
 public class SettingsGUIHolder implements InventoryHolder {
     private final String twitchName;
-    private String mode;
     private int intervalSeconds;
     private int eventSeconds;
     private int voteSeconds;
@@ -13,9 +12,8 @@ public class SettingsGUIHolder implements InventoryHolder {
     private boolean showPollInMinecraft;
     private Inventory inventory;
 
-    public SettingsGUIHolder(String twitchName, String mode, int intervalSeconds, int eventSeconds, int voteSeconds, int maxVoteableEvents, boolean showPollInMinecraft) {
+    public SettingsGUIHolder(String twitchName, int intervalSeconds, int eventSeconds, int voteSeconds, int maxVoteableEvents, boolean showPollInMinecraft) {
         this.twitchName = twitchName;
-        this.mode = mode;
         this.intervalSeconds = intervalSeconds;
         this.eventSeconds = eventSeconds;
         this.voteSeconds = voteSeconds;
@@ -34,14 +32,6 @@ public class SettingsGUIHolder implements InventoryHolder {
 
     public String getTwitchName() {
         return twitchName;
-    }
-
-    public String getMode() {
-        return mode;
-    }
-
-    public void setMode(String mode) {
-        this.mode = mode;
     }
 
     public int getIntervalSeconds() {

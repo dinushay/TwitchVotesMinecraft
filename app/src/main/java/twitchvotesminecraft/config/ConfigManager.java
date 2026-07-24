@@ -14,28 +14,22 @@ public final class ConfigManager {
     public static boolean validateAndRepairDefaultSettings(FileConfiguration config) {
         boolean changed = false;
 
-        // 1. Check twitch.default-settings.mode ("chat" or "poll")
+        // 1. Remove legacy mode setting if present
         String modePath = "twitch.default-settings.mode";
-        if (!config.isString(modePath)) {
-            config.set(modePath, "chat");
+        if (config.contains(modePath)) {
+            config.set(modePath, null);
             changed = true;
-        } else {
-            String modeVal = config.getString(modePath, "").trim().toLowerCase();
-            if (!modeVal.equals("chat") && !modeVal.equals("poll")) {
-                config.set(modePath, "chat");
-                changed = true;
-            }
         }
 
         // 2. Check twitch.default-settings.interval-seconds (15 - 120)
         String intervalPath = "twitch.default-settings.interval-seconds";
         if (!config.isInt(intervalPath)) {
-            config.set(intervalPath, 120);
+            config.set(intervalPath, 90);
             changed = true;
         } else {
             int val = config.getInt(intervalPath);
             if (val < 15 || val > 120) {
-                config.set(intervalPath, 120);
+                config.set(intervalPath, 90);
                 changed = true;
             }
         }
@@ -76,7 +70,7 @@ public final class ConfigManager {
             if (requiredInterval <= 120) {
                 config.set(intervalPath, requiredInterval);
             } else {
-                config.set(intervalPath, 120);
+                config.set(intervalPath, 90);
                 config.set(eventSecondsPath, 60);
                 config.set(voteSecondsPath, 30);
             }

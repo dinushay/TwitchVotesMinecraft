@@ -37,39 +37,35 @@ public class GUIListener implements Listener {
         ClickType click = event.getClick();
 
         switch (slot) {
-            case 10 -> { // Mode
-                String currentMode = holder.getMode();
-                holder.setMode(currentMode.equalsIgnoreCase("chat") ? "poll" : "chat");
-            }
-            case 11 -> { // Interval Seconds (15 - 120)
+            case 10 -> { // Interval Seconds (15 - 120)
                 if (click.isLeftClick()) {
                     holder.setIntervalSeconds(Math.min(120, holder.getIntervalSeconds() + 5));
                 } else if (click.isRightClick()) {
                     holder.setIntervalSeconds(Math.max(15, holder.getIntervalSeconds() - 5));
                 }
             }
-            case 12 -> { // Event Seconds (15 - 120)
+            case 11 -> { // Event Seconds (15 - 120)
                 if (click.isLeftClick()) {
                     holder.setEventSeconds(Math.min(120, holder.getEventSeconds() + 5));
                 } else if (click.isRightClick()) {
                     holder.setEventSeconds(Math.max(15, holder.getEventSeconds() - 5));
                 }
             }
-            case 13 -> { // Vote Seconds (15 - 120)
+            case 12 -> { // Vote Seconds (15 - 120)
                 if (click.isLeftClick()) {
                     holder.setVoteSeconds(Math.min(120, holder.getVoteSeconds() + 5));
                 } else if (click.isRightClick()) {
                     holder.setVoteSeconds(Math.max(15, holder.getVoteSeconds() - 5));
                 }
             }
-            case 14 -> { // Max Voteable Events (2 - 5)
+            case 13 -> { // Max Voteable Events (2 - 5)
                 if (click.isLeftClick()) {
                     holder.setMaxVoteableEvents(Math.min(5, holder.getMaxVoteableEvents() + 1));
                 } else if (click.isRightClick()) {
                     holder.setMaxVoteableEvents(Math.max(2, holder.getMaxVoteableEvents() - 1));
                 }
             }
-            case 15 -> { // Show Poll in Minecraft
+            case 14 -> { // Show Poll in Minecraft
                 holder.setShowPollInMinecraft(!holder.isShowPollInMinecraft());
             }
             case 16 -> { // Confirm & Save
@@ -86,7 +82,9 @@ public class GUIListener implements Listener {
                     return;
                 }
 
-                plugin.getConfig().set("twitch.default-settings.mode", holder.getMode());
+                // Ensure legacy mode key is removed if present
+                plugin.getConfig().set("twitch.default-settings.mode", null);
+
                 plugin.getConfig().set("twitch.default-settings.interval-seconds", intervalSec);
                 plugin.getConfig().set("twitch.default-settings.event-seconds", eventSec);
                 plugin.getConfig().set("twitch.default-settings.vote-seconds", voteSec);
