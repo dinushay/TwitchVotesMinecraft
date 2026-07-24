@@ -14,10 +14,13 @@ public final class ConfigManager {
     public static boolean validateAndRepairDefaultSettings(FileConfiguration config) {
         boolean changed = false;
 
-        // 1. Remove legacy mode setting if present
-        String modePath = "twitch.default-settings.mode";
-        if (config.contains(modePath)) {
-            config.set(modePath, null);
+        // 1. Remove legacy mode and show-poll-in-minecraft settings if present
+        if (config.contains("twitch.default-settings.mode")) {
+            config.set("twitch.default-settings.mode", null);
+            changed = true;
+        }
+        if (config.contains("twitch.default-settings.show-poll-in-minecraft")) {
+            config.set("twitch.default-settings.show-poll-in-minecraft", null);
             changed = true;
         }
 
@@ -88,13 +91,6 @@ public final class ConfigManager {
                 config.set(maxEventsPath, 4);
                 changed = true;
             }
-        }
-
-        // 7. Check twitch.default-settings.show-poll-in-minecraft (boolean)
-        String showPollPath = "twitch.default-settings.show-poll-in-minecraft";
-        if (!config.isBoolean(showPollPath)) {
-            config.set(showPollPath, false);
-            changed = true;
         }
 
         return changed;

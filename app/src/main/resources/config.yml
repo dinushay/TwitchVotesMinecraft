@@ -7,4 +7,3 @@ twitch:
     event-seconds: 60
     vote-seconds: 30
     max-voteable-events: 4
-    show-poll-in-minecraft: false

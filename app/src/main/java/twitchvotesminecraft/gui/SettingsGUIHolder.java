@@ -9,16 +9,14 @@ public class SettingsGUIHolder implements InventoryHolder {
     private int eventSeconds;
     private int voteSeconds;
     private int maxVoteableEvents;
-    private boolean showPollInMinecraft;
     private Inventory inventory;
 
-    public SettingsGUIHolder(String twitchName, int intervalSeconds, int eventSeconds, int voteSeconds, int maxVoteableEvents, boolean showPollInMinecraft) {
+    public SettingsGUIHolder(String twitchName, int intervalSeconds, int eventSeconds, int voteSeconds, int maxVoteableEvents) {
         this.twitchName = twitchName;
         this.intervalSeconds = intervalSeconds;
         this.eventSeconds = eventSeconds;
         this.voteSeconds = voteSeconds;
         this.maxVoteableEvents = maxVoteableEvents;
-        this.showPollInMinecraft = showPollInMinecraft;
     }
 
     @Override
@@ -64,13 +62,5 @@ public class SettingsGUIHolder implements InventoryHolder {
 
     public void setMaxVoteableEvents(int maxVoteableEvents) {
         this.maxVoteableEvents = maxVoteableEvents;
-    }
-
-    public boolean isShowPollInMinecraft() {
-        return showPollInMinecraft;
-    }
-
-    public void setShowPollInMinecraft(boolean showPollInMinecraft) {
-        this.showPollInMinecraft = showPollInMinecraft;
     }
 }

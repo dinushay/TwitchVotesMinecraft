@@ -24,9 +24,8 @@ public final class SettingsGUI {
         int eventSeconds = plugin.getConfig().getInt("twitch.default-settings.event-seconds", 60);
         int voteSeconds = plugin.getConfig().getInt("twitch.default-settings.vote-seconds", 30);
         int maxVoteableEvents = plugin.getConfig().getInt("twitch.default-settings.max-voteable-events", 4);
-        boolean showPollInMinecraft = plugin.getConfig().getBoolean("twitch.default-settings.show-poll-in-minecraft", false);
 
-        SettingsGUIHolder holder = new SettingsGUIHolder(twitchName, intervalSeconds, eventSeconds, voteSeconds, maxVoteableEvents, showPollInMinecraft);
+        SettingsGUIHolder holder = new SettingsGUIHolder(twitchName, intervalSeconds, eventSeconds, voteSeconds, maxVoteableEvents);
 
         Component title = SERIALIZER.deserialize("§8Twitch Settings - §5" + twitchName);
         Inventory inv = Bukkit.createInventory(holder, 27, title);
@@ -75,15 +74,6 @@ public final class SettingsGUI {
                 List.of("§7Left-Click: §a+1 §7| Right-Click: §c-1", "§7Range: 2 - 5")
         );
         inv.setItem(13, maxEventsItem);
-
-        // Slot 14: Show Poll in Minecraft
-        String pollState = holder.isShowPollInMinecraft() ? "§aEnabled" : "§cDisabled";
-        ItemStack pollItem = createItem(
-                Material.BEACON,
-                "§eShow Poll in Minecraft: " + pollState,
-                List.of("§7Click to toggle ON/OFF.")
-        );
-        inv.setItem(14, pollItem);
 
         // Slot 16: Confirm Button
         ItemStack confirmItem = createItem(

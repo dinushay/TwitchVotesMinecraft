@@ -65,9 +65,6 @@ public class GUIListener implements Listener {
                     holder.setMaxVoteableEvents(Math.max(2, holder.getMaxVoteableEvents() - 1));
                 }
             }
-            case 14 -> { // Show Poll in Minecraft
-                holder.setShowPollInMinecraft(!holder.isShowPollInMinecraft());
-            }
             case 16 -> { // Confirm & Save
                 int eventSec = holder.getEventSeconds();
                 int voteSec = holder.getVoteSeconds();
@@ -82,14 +79,14 @@ public class GUIListener implements Listener {
                     return;
                 }
 
-                // Ensure legacy mode key is removed if present
+                // Ensure legacy keys are cleaned up if present
                 plugin.getConfig().set("twitch.default-settings.mode", null);
+                plugin.getConfig().set("twitch.default-settings.show-poll-in-minecraft", null);
 
                 plugin.getConfig().set("twitch.default-settings.interval-seconds", intervalSec);
                 plugin.getConfig().set("twitch.default-settings.event-seconds", eventSec);
                 plugin.getConfig().set("twitch.default-settings.vote-seconds", voteSec);
                 plugin.getConfig().set("twitch.default-settings.max-voteable-events", holder.getMaxVoteableEvents());
-                plugin.getConfig().set("twitch.default-settings.show-poll-in-minecraft", holder.isShowPollInMinecraft());
 
                 plugin.saveConfig();
                 player.sendMessage(SERIALIZER.deserialize("§a[TwitchVotesMinecraft] Default settings successfully saved to config.yml!"));
