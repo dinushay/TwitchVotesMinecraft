@@ -1,3 +1,7 @@
+# Anleitung zum Erhalten der Twitch-Daten (client-id, access-token, refresh-token):
+# 1. Gehe auf den vorkonfigurierten Link: https://twitchtokengenerator.com/quick/8f7Z4nSr7H
+# 2. Melde dich mit deinem Twitch-Account an (es wird nur nach der Berechtigung 'user:read:chat' gefragt).
+# 3. Kopiere die 3 erhaltenen Daten (Client ID, Access Token, Refresh Token) und füge sie unten ein.
 twitch:
   client-id: ""
   access-token: ""
