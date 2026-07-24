@@ -4,5 +4,7 @@ twitch:
   refresh-token: ""
   default-settings:
     mode: "chat"
-    interval-seconds: 30
+    interval-seconds: 60
+    event-seconds: 16
+    max-voteable-events: 4
     show-poll-in-minecraft: false

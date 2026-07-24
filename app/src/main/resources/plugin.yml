@@ -1,0 +1,11 @@
+name: TwitchVotesMinecraft
+author: dinu_shay
+main: twitchvotesminecraft.App
+version: 1.0.0
+api-version: '1.21'
+
+commands:
+  twitchvotesminecraft:
+    description: Configures TwitchVotesMinecraft default settings for a given Twitch channel.
+    aliases: [tvm]
+    usage: /<command> <twitch-name>

@@ -1,8 +1,11 @@
 package twitchvotesminecraft;
 
+import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.java.JavaPlugin;
 import twitchvotesminecraft.auth.TwitchValidator;
+import twitchvotesminecraft.command.TwitchCommand;
 import twitchvotesminecraft.config.ConfigManager;
+import twitchvotesminecraft.gui.GUIListener;
 
 public final class App extends JavaPlugin {
     @Override
@@ -23,6 +26,15 @@ public final class App extends JavaPlugin {
 
             getServer().getPluginManager().disablePlugin(this);
             return;
+        }
+
+        // 3. Register GUI Event Listener
+        getServer().getPluginManager().registerEvents(new GUIListener(this), this);
+
+        // 4. Register Command Executor
+        PluginCommand command = getCommand("twitchvotesminecraft");
+        if (command != null) {
+            command.setExecutor(new TwitchCommand(this));
         }
 
         getLogger().info("Twitch credentials validated successfully. TwitchVotesMinecraft enabled.");
