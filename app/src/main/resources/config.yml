@@ -1,0 +1,8 @@
+twitch:
+  client-id: ""
+  access-token: ""
+  refresh-token: ""
+  default-settings:
+    mode: "chat"
+    interval-seconds: 30
+    show-poll-in-minecraft: false
