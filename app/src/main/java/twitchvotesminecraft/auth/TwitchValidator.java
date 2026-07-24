@@ -3,6 +3,7 @@ package twitchvotesminecraft.auth;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.JsonSyntaxException;
 import org.bukkit.configuration.file.FileConfiguration;
 
 import java.io.IOException;
@@ -65,7 +66,12 @@ public final class TwitchValidator {
             }
 
             // Parse response JSON
-            JsonObject json = JsonParser.parseString(response.body()).getAsJsonObject();
+            JsonObject json;
+            try {
+                json = JsonParser.parseString(response.body()).getAsJsonObject();
+            } catch (JsonSyntaxException | IllegalStateException e) {
+                return new ValidationResult(false, "Failed to parse Twitch OAuth validation response as JSON.");
+            }
             if (!json.has("client_id")) {
                 return new ValidationResult(false, "Twitch OAuth validation response did not contain a 'client_id'.");
             }
