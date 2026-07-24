@@ -40,29 +40,37 @@ public class GUIListener implements Listener {
             case 10 -> { // Interval Seconds (15 - 120)
                 if (click.isLeftClick()) {
                     holder.setIntervalSeconds(Math.min(120, holder.getIntervalSeconds() + 5));
+                    player.playSound(player.getLocation(), org.bukkit.Sound.UI_BUTTON_CLICK, 1.0f, 1.2f);
                 } else if (click.isRightClick()) {
                     holder.setIntervalSeconds(Math.max(15, holder.getIntervalSeconds() - 5));
+                    player.playSound(player.getLocation(), org.bukkit.Sound.UI_BUTTON_CLICK, 1.0f, 0.8f);
                 }
             }
             case 11 -> { // Event Seconds (15 - 120)
                 if (click.isLeftClick()) {
                     holder.setEventSeconds(Math.min(120, holder.getEventSeconds() + 5));
+                    player.playSound(player.getLocation(), org.bukkit.Sound.UI_BUTTON_CLICK, 1.0f, 1.2f);
                 } else if (click.isRightClick()) {
                     holder.setEventSeconds(Math.max(15, holder.getEventSeconds() - 5));
+                    player.playSound(player.getLocation(), org.bukkit.Sound.UI_BUTTON_CLICK, 1.0f, 0.8f);
                 }
             }
             case 12 -> { // Vote Seconds (15 - 120)
                 if (click.isLeftClick()) {
                     holder.setVoteSeconds(Math.min(120, holder.getVoteSeconds() + 5));
+                    player.playSound(player.getLocation(), org.bukkit.Sound.UI_BUTTON_CLICK, 1.0f, 1.2f);
                 } else if (click.isRightClick()) {
                     holder.setVoteSeconds(Math.max(15, holder.getVoteSeconds() - 5));
+                    player.playSound(player.getLocation(), org.bukkit.Sound.UI_BUTTON_CLICK, 1.0f, 0.8f);
                 }
             }
             case 13 -> { // Max Voteable Events (2 - 5)
                 if (click.isLeftClick()) {
                     holder.setMaxVoteableEvents(Math.min(5, holder.getMaxVoteableEvents() + 1));
+                    player.playSound(player.getLocation(), org.bukkit.Sound.UI_BUTTON_CLICK, 1.0f, 1.2f);
                 } else if (click.isRightClick()) {
                     holder.setMaxVoteableEvents(Math.max(2, holder.getMaxVoteableEvents() - 1));
+                    player.playSound(player.getLocation(), org.bukkit.Sound.UI_BUTTON_CLICK, 1.0f, 0.8f);
                 }
             }
             case 16 -> { // Confirm & Save -> Start Voting Session
@@ -72,6 +80,7 @@ public class GUIListener implements Listener {
                 int sum = eventSec + voteSec;
 
                 if (sum > intervalSec) {
+                    player.playSound(player.getLocation(), org.bukkit.Sound.ENTITY_VILLAGER_NO, 1.0f, 1.0f);
                     player.sendMessage(SERIALIZER.deserialize(
                             "§c[TwitchVotesMinecraft] Cannot save! Event Seconds (" + eventSec + "s) + Vote Seconds (" + voteSec + "s) = "
                             + sum + "s, which exceeds Interval Seconds (" + intervalSec + "s)."
@@ -89,6 +98,7 @@ public class GUIListener implements Listener {
                 plugin.getConfig().set("twitch.default-settings.max-voteable-events", holder.getMaxVoteableEvents());
 
                 plugin.saveConfig();
+                player.playSound(player.getLocation(), org.bukkit.Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.0f);
                 player.sendMessage(SERIALIZER.deserialize("§a[TwitchVotesMinecraft] Default settings successfully saved to config.yml!"));
                 player.closeInventory();
 
