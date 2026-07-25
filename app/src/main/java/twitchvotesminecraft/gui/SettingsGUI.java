@@ -49,7 +49,7 @@ public final class SettingsGUI {
         ItemStack intervalItem = createItem(
                 Material.CLOCK,
                 "§eInterval Seconds: §b" + holder.getIntervalSeconds() + "s",
-                List.of("§7Left-Click: §a+5s §7| Right-Click: §c-5s", "§7Range: 15s - 120s")
+                List.of("§7Left-Click: §a+5s §7| Right-Click: §c-5s", "§7Shift-Click: §b±15s", "§7Range: 15s - 120s")
         );
         inv.setItem(10, intervalItem);
 
@@ -57,7 +57,7 @@ public final class SettingsGUI {
         ItemStack eventItem = createItem(
                 Material.COMPARATOR,
                 "§eEvent Seconds: §b" + holder.getEventSeconds() + "s",
-                List.of("§7Left-Click: §a+5s §7| Right-Click: §c-5s", "§7Range: 15s - 120s")
+                List.of("§7Left-Click: §a+5s §7| Right-Click: §c-5s", "§7Shift-Click: §b±15s", "§7Range: 15s - 120s")
         );
         inv.setItem(11, eventItem);
 
@@ -65,7 +65,7 @@ public final class SettingsGUI {
         ItemStack voteItem = createItem(
                 Material.REPEATER,
                 "§eVote Seconds: §b" + holder.getVoteSeconds() + "s",
-                List.of("§7Left-Click: §a+5s §7| Right-Click: §c-5s", "§7Range: 15s - 120s")
+                List.of("§7Left-Click: §a+5s §7| Right-Click: §c-5s", "§7Shift-Click: §b±15s", "§7Range: 15s - 120s")
         );
         inv.setItem(12, voteItem);
 

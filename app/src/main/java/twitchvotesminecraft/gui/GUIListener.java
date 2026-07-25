@@ -38,29 +38,32 @@ public class GUIListener implements Listener {
 
         switch (slot) {
             case 10 -> { // Interval Seconds (15 - 120)
+                int delta = click.isShiftClick() ? 15 : 5;
                 if (click.isLeftClick()) {
-                    holder.setIntervalSeconds(Math.min(120, holder.getIntervalSeconds() + 5));
+                    holder.setIntervalSeconds(Math.min(120, holder.getIntervalSeconds() + delta));
                     player.playSound(player.getLocation(), org.bukkit.Sound.UI_BUTTON_CLICK, 1.0f, 1.2f);
                 } else if (click.isRightClick()) {
-                    holder.setIntervalSeconds(Math.max(15, holder.getIntervalSeconds() - 5));
+                    holder.setIntervalSeconds(Math.max(15, holder.getIntervalSeconds() - delta));
                     player.playSound(player.getLocation(), org.bukkit.Sound.UI_BUTTON_CLICK, 1.0f, 0.8f);
                 }
             }
             case 11 -> { // Event Seconds (15 - 120)
+                int delta = click.isShiftClick() ? 15 : 5;
                 if (click.isLeftClick()) {
-                    holder.setEventSeconds(Math.min(120, holder.getEventSeconds() + 5));
+                    holder.setEventSeconds(Math.min(120, holder.getEventSeconds() + delta));
                     player.playSound(player.getLocation(), org.bukkit.Sound.UI_BUTTON_CLICK, 1.0f, 1.2f);
                 } else if (click.isRightClick()) {
-                    holder.setEventSeconds(Math.max(15, holder.getEventSeconds() - 5));
+                    holder.setEventSeconds(Math.max(15, holder.getEventSeconds() - delta));
                     player.playSound(player.getLocation(), org.bukkit.Sound.UI_BUTTON_CLICK, 1.0f, 0.8f);
                 }
             }
             case 12 -> { // Vote Seconds (15 - 120)
+                int delta = click.isShiftClick() ? 15 : 5;
                 if (click.isLeftClick()) {
-                    holder.setVoteSeconds(Math.min(120, holder.getVoteSeconds() + 5));
+                    holder.setVoteSeconds(Math.min(120, holder.getVoteSeconds() + delta));
                     player.playSound(player.getLocation(), org.bukkit.Sound.UI_BUTTON_CLICK, 1.0f, 1.2f);
                 } else if (click.isRightClick()) {
-                    holder.setVoteSeconds(Math.max(15, holder.getVoteSeconds() - 5));
+                    holder.setVoteSeconds(Math.max(15, holder.getVoteSeconds() - delta));
                     player.playSound(player.getLocation(), org.bukkit.Sound.UI_BUTTON_CLICK, 1.0f, 0.8f);
                 }
             }
