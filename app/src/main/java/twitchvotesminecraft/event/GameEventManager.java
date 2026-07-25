@@ -864,6 +864,170 @@ public final class GameEventManager {
                 });
             }
         });
+
+        // 58. TNT Rain
+        ALL_EVENTS.add(new GameEvent() {
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_58"); }
+            @Override public String getDescription() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("event_descriptions.event_58"); }
+            @Override public boolean isInstant() { return true; }
+            @Override
+            public void execute(Player player, App plugin, int eventSeconds) {
+                Location loc = player.getLocation().add(0, 10, 0);
+                for (int i = 0; i < 3; i++) {
+                    TNTPrimed tnt = (TNTPrimed) loc.getWorld().spawnEntity(getRandomNearbyLocation(loc, 3), EntityType.TNT);
+                    tnt.setFuseTicks(80);
+                }
+            }
+        });
+
+        // 59. Random Teleport
+        ALL_EVENTS.add(new GameEvent() {
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_59"); }
+            @Override public String getDescription() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("event_descriptions.event_59"); }
+            @Override public boolean isInstant() { return true; }
+            @Override
+            public void execute(Player player, App plugin, int eventSeconds) {
+                Location loc = player.getLocation();
+                double xOffset = ThreadLocalRandom.current().nextDouble(-20, 20);
+                double zOffset = ThreadLocalRandom.current().nextDouble(-20, 20);
+                Location newLoc = loc.add(xOffset, 0, zOffset);
+                int highestY = newLoc.getWorld().getHighestBlockYAt(newLoc);
+                newLoc.setY(highestY + 1);
+                player.teleport(newLoc);
+            }
+        });
+
+        // 60. Anvil Rain
+        ALL_EVENTS.add(new GameEvent() {
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_60"); }
+            @Override public String getDescription() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("event_descriptions.event_60"); }
+            @Override public boolean isInstant() { return true; }
+            @Override
+            public void execute(Player player, App plugin, int eventSeconds) {
+                Location loc = player.getLocation().add(0, 15, 0);
+                for (int i = 0; i < 3; i++) {
+                    Location dropLoc = getRandomNearbyLocation(loc, 2);
+                    dropLoc.getWorld().spawnFallingBlock(dropLoc, Material.ANVIL.createBlockData());
+                }
+            }
+        });
+
+        // 61. Web Trap
+        ALL_EVENTS.add(new GameEvent() {
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_61"); }
+            @Override public String getDescription() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("event_descriptions.event_61"); }
+            @Override public boolean isInstant() { return false; }
+            @Override
+            public void execute(Player player, App plugin, int eventSeconds) {
+                Location center = player.getLocation();
+                List<Block> placed = new ArrayList<>();
+                for (int x = -1; x <= 1; x++) {
+                    for (int z = -1; z <= 1; z++) {
+                        Block b = center.clone().add(x, 0, z).getBlock();
+                        if (b.getType().isAir()) {
+                            b.setType(Material.COBWEB);
+                            placed.add(b);
+                        }
+                    }
+                }
+                Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                    for (Block b : placed) b.setType(Material.AIR);
+                }, eventSeconds * 20L);
+            }
+        });
+
+        // 62. Catapult
+        ALL_EVENTS.add(new GameEvent() {
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_62"); }
+            @Override public String getDescription() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("event_descriptions.event_62"); }
+            @Override public boolean isInstant() { return true; }
+            @Override
+            public void execute(Player player, App plugin, int eventSeconds) {
+                player.setVelocity(new Vector(0, 3.5, 0));
+                player.playSound(player.getLocation(), Sound.ENTITY_BAT_TAKEOFF, 1.0f, 0.5f);
+            }
+        });
+
+        // 63. Invisibility
+        ALL_EVENTS.add(new GameEvent() {
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_63"); }
+            @Override public String getDescription() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("event_descriptions.event_63"); }
+            @Override public boolean isInstant() { return false; }
+            @Override
+            public void execute(Player player, App plugin, int eventSeconds) {
+                player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, eventSeconds * 20, 0, false, false));
+            }
+        });
+
+        // 64. Smite Nearby
+        ALL_EVENTS.add(new GameEvent() {
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_64"); }
+            @Override public String getDescription() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("event_descriptions.event_64"); }
+            @Override public boolean isInstant() { return true; }
+            @Override
+            public void execute(Player player, App plugin, int eventSeconds) {
+                player.getNearbyEntities(20, 20, 20).forEach(entity -> {
+                    if (entity instanceof LivingEntity) {
+                        entity.getWorld().strikeLightning(entity.getLocation());
+                    }
+                });
+            }
+        });
+
+        // 65. Glass Cage
+        ALL_EVENTS.add(new GameEvent() {
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_65"); }
+            @Override public String getDescription() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("event_descriptions.event_65"); }
+            @Override public boolean isInstant() { return false; }
+            @Override
+            public void execute(Player player, App plugin, int eventSeconds) {
+                Location center = player.getLocation();
+                List<Block> placed = new ArrayList<>();
+                for (int x = -1; x <= 1; x++) {
+                    for (int y = 0; y <= 2; y++) {
+                        for (int z = -1; z <= 1; z++) {
+                            if (x == 0 && (y == 0 || y == 1) && z == 0) continue;
+                            Block b = center.clone().add(x, y, z).getBlock();
+                            if (b.getType().isAir()) {
+                                b.setType(Material.GLASS);
+                                placed.add(b);
+                            }
+                        }
+                    }
+                }
+                Bukkit.getScheduler().runTaskLater(plugin, () -> {
+                    for (Block b : placed) b.setType(Material.AIR);
+                }, eventSeconds * 20L);
+            }
+        });
+
+        // 66. Creeper Swarm
+        ALL_EVENTS.add(new GameEvent() {
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_66"); }
+            @Override public String getDescription() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("event_descriptions.event_66"); }
+            @Override public boolean isInstant() { return true; }
+            @Override
+            public void execute(Player player, App plugin, int eventSeconds) {
+                Location loc = player.getLocation();
+                for (int i = 0; i < 5; i++) {
+                    loc.getWorld().spawnEntity(getRandomNearbyLocation(loc, 4), EntityType.CREEPER);
+                }
+            }
+        });
+
+        // 67. XP Shower
+        ALL_EVENTS.add(new GameEvent() {
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_67"); }
+            @Override public String getDescription() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("event_descriptions.event_67"); }
+            @Override public boolean isInstant() { return true; }
+            @Override
+            public void execute(Player player, App plugin, int eventSeconds) {
+                Location loc = player.getLocation().add(0, 3, 0);
+                for (int i = 0; i < 20; i++) {
+                    loc.getWorld().spawnEntity(getRandomNearbyLocation(loc, 2), EntityType.EXPERIENCE_BOTTLE);
+                }
+            }
+        });
     }
 
     private GameEventManager() {}
