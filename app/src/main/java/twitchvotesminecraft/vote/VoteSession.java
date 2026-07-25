@@ -175,6 +175,7 @@ public class VoteSession {
                 "%event%", winningEvent.getName(),
                 "%percent%", String.valueOf(winPercent)
         )));
+        player.sendMessage(net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacyAmpersand().deserialize(winningEvent.getDescription()));
 
         // Execute Winner Event targeted at player
         winningEvent.execute(player, plugin, eventSeconds);
