@@ -846,6 +846,24 @@ public final class GameEventManager {
                 }, 3 * 20L);
             }
         });
+
+        // 57. Gravity Inversion
+        ALL_EVENTS.add(new GameEvent() {
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_57"); }
+            @Override public String getDescription() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("event_descriptions.event_57"); }
+            @Override public boolean isInstant() { return false; }
+            @Override
+            public void execute(Player player, App plugin, int eventSeconds) {
+                player.setVelocity(new Vector(0, 1.5, 0));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, eventSeconds * 20, 0));
+                player.getNearbyEntities(15, 15, 15).forEach(entity -> {
+                    entity.setVelocity(new Vector(0, 1.5, 0));
+                    if (entity instanceof LivingEntity living) {
+                        living.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_FALLING, eventSeconds * 20, 0));
+                    }
+                });
+            }
+        });
     }
 
     private GameEventManager() {}
