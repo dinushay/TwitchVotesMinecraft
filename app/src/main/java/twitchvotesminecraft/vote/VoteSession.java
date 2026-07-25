@@ -134,6 +134,9 @@ public class VoteSession {
 
                 bossBar.setTitle(plugin.getMessageManager().getString("bossbar.voting", java.util.Map.of("%time%", String.valueOf(remaining))));
                 bossBar.setProgress(Math.max(0.0, Math.min(1.0, (double) remaining / voteSeconds)));
+
+                // ⚡ Bolt: Batch update the scoreboard once per second instead of per chat message
+                updateScoreboard();
             }
         }.runTaskTimer(plugin, 20L, 20L);
     }
@@ -281,7 +284,8 @@ public class VoteSession {
             int vote = Integer.parseInt(msg);
             if (vote >= 1 && vote <= currentOptions.size()) {
                 userVotes.put(username.toLowerCase(), vote);
-                Bukkit.getScheduler().runTask(plugin, this::updateScoreboard);
+                // ⚡ Bolt: Removed synchronous Bukkit task per-message to prevent TPS drops.
+                // Scoreboard update is now batched in the 1-second voting timer task.
             }
         } catch (NumberFormatException ignored) {}
     }
