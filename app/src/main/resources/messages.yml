@@ -102,6 +102,7 @@ events:
   event_54: "Inventory Clutter"
   event_55: "Double Trouble"
   event_56: "Flashbang"
+  event_57: "Gravity Inversion"
 
 event_entities:
   friendly_creeper: "&aFriendly Creeper"
@@ -168,3 +169,4 @@ event_descriptions:
   event_54: "&8[-] Cluttered Inventory with Wheat Seeds"
   event_55: "&8[-] Doubled Monsters"
   event_56: "&8[-] Flashbang (Blindness & Nausea)"
+  event_57: "&8[+] Entities Thrown Upward"
