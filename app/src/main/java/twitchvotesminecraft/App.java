@@ -5,6 +5,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import twitchvotesminecraft.auth.TwitchValidator;
 import twitchvotesminecraft.command.TwitchCommand;
 import twitchvotesminecraft.config.ConfigManager;
+import twitchvotesminecraft.config.MessageManager;
 import twitchvotesminecraft.gui.GUIListener;
 import twitchvotesminecraft.listener.PlayerEventListener;
 import twitchvotesminecraft.vote.VoteSession;
@@ -16,10 +17,16 @@ import java.util.concurrent.ConcurrentHashMap;
 public final class App extends JavaPlugin {
 
     private final Map<UUID, VoteSession> activeSessions = new ConcurrentHashMap<>();
+    private static App instance;
+    private MessageManager messageManager;
 
     @Override
     public void onEnable() {
+        instance = this;
         saveDefaultConfig();
+
+        // Load messages.yml
+        messageManager = new MessageManager(this);
 
         // 1. Validate and repair default settings in config.yml
         ConfigManager.validateAndRepairDefaultSettings(this);
@@ -65,6 +72,14 @@ public final class App extends JavaPlugin {
 
     public boolean hasActiveSession(Player player) {
         return activeSessions.containsKey(player.getUniqueId());
+    }
+
+    public static App getInstance() {
+        return instance;
+    }
+
+    public MessageManager getMessageManager() {
+        return messageManager;
     }
 
     @Override

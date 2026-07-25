@@ -1,6 +1,5 @@
 package twitchvotesminecraft.listener;
 
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -9,7 +8,6 @@ import twitchvotesminecraft.App;
 
 public class PlayerEventListener implements Listener {
 
-    private static final LegacyComponentSerializer SERIALIZER = LegacyComponentSerializer.legacySection();
     private final App plugin;
 
     public PlayerEventListener(App plugin) {
@@ -21,7 +19,7 @@ public class PlayerEventListener implements Listener {
         Player player = event.getEntity();
         if (plugin.hasActiveSession(player)) {
             plugin.stopVoteSession(player);
-            player.sendMessage(SERIALIZER.deserialize("§c[TwitchVotesMinecraft] You died! Active Twitch voting session has been cancelled."));
+            player.sendMessage(plugin.getMessageManager().getComponent("session.player-died"));
         }
     }
 }

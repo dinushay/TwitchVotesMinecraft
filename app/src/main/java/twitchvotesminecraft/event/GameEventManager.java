@@ -1,6 +1,6 @@
 package twitchvotesminecraft.event;
 
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -23,7 +23,7 @@ import java.util.concurrent.ThreadLocalRandom;
 
 public final class GameEventManager {
 
-    private static final LegacyComponentSerializer SERIALIZER = LegacyComponentSerializer.legacySection();
+
     private static final List<GameEvent> ALL_EVENTS = new ArrayList<>();
 
     static {
@@ -31,7 +31,7 @@ public final class GameEventManager {
         
         // 1. Summon 10 Zombies
         ALL_EVENTS.add(new GameEvent() {
-            @Override public String getName() { return "Summon 10 Zombies"; }
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_1"); }
             @Override public boolean isInstant() { return true; }
             @Override
             public void execute(Player player, App plugin, int eventSeconds) {
@@ -44,7 +44,7 @@ public final class GameEventManager {
 
         // 2. Give Random Item
         ALL_EVENTS.add(new GameEvent() {
-            @Override public String getName() { return "Give Random Item"; }
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_2"); }
             @Override public boolean isInstant() { return true; }
             @Override
             public void execute(Player player, App plugin, int eventSeconds) {
@@ -59,7 +59,7 @@ public final class GameEventManager {
 
         // 3. Shuffle Inventory
         ALL_EVENTS.add(new GameEvent() {
-            @Override public String getName() { return "Shuffle Inventory"; }
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_3"); }
             @Override public boolean isInstant() { return true; }
             @Override
             public void execute(Player player, App plugin, int eventSeconds) {
@@ -73,7 +73,7 @@ public final class GameEventManager {
 
         // 4. Drop Inventory
         ALL_EVENTS.add(new GameEvent() {
-            @Override public String getName() { return "Drop Inventory"; }
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_4"); }
             @Override public boolean isInstant() { return true; }
             @Override
             public void execute(Player player, App plugin, int eventSeconds) {
@@ -90,7 +90,7 @@ public final class GameEventManager {
 
         // 5. Time Set Night
         ALL_EVENTS.add(new GameEvent() {
-            @Override public String getName() { return "Time Set Night"; }
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_5"); }
             @Override public boolean isInstant() { return true; }
             @Override
             public void execute(Player player, App plugin, int eventSeconds) {
@@ -100,7 +100,7 @@ public final class GameEventManager {
 
         // 6. Fly (Levitation)
         ALL_EVENTS.add(new GameEvent() {
-            @Override public String getName() { return "Fly (Levitation)"; }
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_6"); }
             @Override public boolean isInstant() { return false; }
             @Override
             public void execute(Player player, App plugin, int eventSeconds) {
@@ -110,7 +110,7 @@ public final class GameEventManager {
 
         // 7. Compensation (Full Health & Hunger)
         ALL_EVENTS.add(new GameEvent() {
-            @Override public String getName() { return "Compensation (Heal & Feed)"; }
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_7"); }
             @Override public boolean isInstant() { return true; }
             @Override
             public void execute(Player player, App plugin, int eventSeconds) {
@@ -122,7 +122,7 @@ public final class GameEventManager {
 
         // 8. 50% Health
         ALL_EVENTS.add(new GameEvent() {
-            @Override public String getName() { return "50% Health"; }
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_8"); }
             @Override public boolean isInstant() { return true; }
             @Override
             public void execute(Player player, App plugin, int eventSeconds) {
@@ -132,7 +132,7 @@ public final class GameEventManager {
 
         // 9. Hunger
         ALL_EVENTS.add(new GameEvent() {
-            @Override public String getName() { return "Zero Hunger"; }
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_9"); }
             @Override public boolean isInstant() { return true; }
             @Override
             public void execute(Player player, App plugin, int eventSeconds) {
@@ -143,7 +143,7 @@ public final class GameEventManager {
 
         // 10. Bad Omen
         ALL_EVENTS.add(new GameEvent() {
-            @Override public String getName() { return "Bad Omen Effect"; }
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_10"); }
             @Override public boolean isInstant() { return false; }
             @Override
             public void execute(Player player, App plugin, int eventSeconds) {
@@ -153,7 +153,7 @@ public final class GameEventManager {
 
         // 11. Lightning Strike
         ALL_EVENTS.add(new GameEvent() {
-            @Override public String getName() { return "Lightning Strike"; }
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_11"); }
             @Override public boolean isInstant() { return true; }
             @Override
             public void execute(Player player, App plugin, int eventSeconds) {
@@ -163,7 +163,7 @@ public final class GameEventManager {
 
         // 12. Rest (Freeze 5s)
         ALL_EVENTS.add(new GameEvent() {
-            @Override public String getName() { return "Rest (Freeze 5s)"; }
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_12"); }
             @Override public boolean isInstant() { return false; }
             @Override
             public void execute(Player player, App plugin, int eventSeconds) {
@@ -174,7 +174,7 @@ public final class GameEventManager {
 
         // 13. Rapid Flooding
         ALL_EVENTS.add(new GameEvent() {
-            @Override public String getName() { return "Rapid Flooding"; }
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_13"); }
             @Override public boolean isInstant() { return true; }
             @Override
             public void execute(Player player, App plugin, int eventSeconds) {
@@ -185,7 +185,7 @@ public final class GameEventManager {
 
         // 14. Fireball
         ALL_EVENTS.add(new GameEvent() {
-            @Override public String getName() { return "Launch Fireball"; }
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_14"); }
             @Override public boolean isInstant() { return true; }
             @Override
             public void execute(Player player, App plugin, int eventSeconds) {
@@ -196,7 +196,7 @@ public final class GameEventManager {
 
         // 15. Aww, Man (Creeper Sound)
         ALL_EVENTS.add(new GameEvent() {
-            @Override public String getName() { return "Aww, Man!"; }
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_15"); }
             @Override public boolean isInstant() { return true; }
             @Override
             public void execute(Player player, App plugin, int eventSeconds) {
@@ -206,7 +206,7 @@ public final class GameEventManager {
 
         // 16. Chicken Rain
         ALL_EVENTS.add(new GameEvent() {
-            @Override public String getName() { return "Chicken Rain"; }
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_16"); }
             @Override public boolean isInstant() { return true; }
             @Override
             public void execute(Player player, App plugin, int eventSeconds) {
@@ -219,7 +219,7 @@ public final class GameEventManager {
 
         // 17. Nausea
         ALL_EVENTS.add(new GameEvent() {
-            @Override public String getName() { return "Nausea Effect"; }
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_17"); }
             @Override public boolean isInstant() { return false; }
             @Override
             public void execute(Player player, App plugin, int eventSeconds) {
@@ -229,7 +229,7 @@ public final class GameEventManager {
 
         // 18. Don't Stress (0.5 Hearts)
         ALL_EVENTS.add(new GameEvent() {
-            @Override public String getName() { return "Don't Stress (0.5 Hearts)"; }
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_18"); }
             @Override public boolean isInstant() { return true; }
             @Override
             public void execute(Player player, App plugin, int eventSeconds) {
@@ -239,31 +239,31 @@ public final class GameEventManager {
 
         // 19. Friendly Creeper
         ALL_EVENTS.add(new GameEvent() {
-            @Override public String getName() { return "Friendly Creeper"; }
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_19"); }
             @Override public boolean isInstant() { return true; }
             @Override
             public void execute(Player player, App plugin, int eventSeconds) {
                 Creeper creeper = (Creeper) player.getWorld().spawnEntity(player.getLocation().add(1, 0, 1), EntityType.CREEPER);
-                creeper.customName(SERIALIZER.deserialize("§aFriendly Creeper"));
+                creeper.customName(twitchvotesminecraft.App.getInstance().getMessageManager().getComponent("event_entities.friendly_creeper"));
                 creeper.setCustomNameVisible(true);
             }
         });
 
         // 20. Scammer (Brad Pitt Merchant)
         ALL_EVENTS.add(new GameEvent() {
-            @Override public String getName() { return "Scammer Brad Pitt"; }
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_20"); }
             @Override public boolean isInstant() { return true; }
             @Override
             public void execute(Player player, App plugin, int eventSeconds) {
                 WanderingTrader trader = (WanderingTrader) player.getWorld().spawnEntity(player.getLocation(), EntityType.WANDERING_TRADER);
-                trader.customName(SERIALIZER.deserialize("§eBrad Pitt (Scammer)"));
+                trader.customName(twitchvotesminecraft.App.getInstance().getMessageManager().getComponent("event_entities.brad_pitt_scammer"));
                 trader.setCustomNameVisible(true);
             }
         });
 
         // 21. Glow Nearby Entities
         ALL_EVENTS.add(new GameEvent() {
-            @Override public String getName() { return "Glow Nearby Entities"; }
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_21"); }
             @Override public boolean isInstant() { return false; }
             @Override
             public void execute(Player player, App plugin, int eventSeconds) {
@@ -279,7 +279,7 @@ public final class GameEventManager {
 
         // 22. Spooky Pumpkin
         ALL_EVENTS.add(new GameEvent() {
-            @Override public String getName() { return "Spooky Pumpkin"; }
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_22"); }
             @Override public boolean isInstant() { return true; }
             @Override
             public void execute(Player player, App plugin, int eventSeconds) {
@@ -293,7 +293,7 @@ public final class GameEventManager {
 
         // 23. Random Enchant
         ALL_EVENTS.add(new GameEvent() {
-            @Override public String getName() { return "Random Enchant"; }
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_23"); }
             @Override public boolean isInstant() { return true; }
             @Override
             public void execute(Player player, App plugin, int eventSeconds) {
@@ -308,7 +308,7 @@ public final class GameEventManager {
 
         // 24. The Cake is a Lie
         ALL_EVENTS.add(new GameEvent() {
-            @Override public String getName() { return "The Cake is a Lie"; }
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_24"); }
             @Override public boolean isInstant() { return true; }
             @Override
             public void execute(Player player, App plugin, int eventSeconds) {
@@ -318,15 +318,15 @@ public final class GameEventManager {
 
         // 25. Suspicious Apple
         ALL_EVENTS.add(new GameEvent() {
-            @Override public String getName() { return "Suspicious Apple"; }
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_25"); }
             @Override public boolean isInstant() { return true; }
             @Override
             public void execute(Player player, App plugin, int eventSeconds) {
                 ItemStack apple = new ItemStack(Material.APPLE, 1);
                 ItemMeta meta = apple.getItemMeta();
                 if (meta != null) {
-                    meta.displayName(SERIALIZER.deserialize("§cSuspicious Apple"));
-                    meta.lore(List.of(SERIALIZER.deserialize("§7Looks dangerously delicious...")));
+                    meta.displayName(twitchvotesminecraft.App.getInstance().getMessageManager().getComponent("event_entities.suspicious_apple"));
+                    meta.lore(List.of(twitchvotesminecraft.App.getInstance().getMessageManager().getComponent("event_entities.suspicious_apple_lore")));
                     apple.setItemMeta(meta);
                 }
                 player.getInventory().addItem(apple);
@@ -339,7 +339,7 @@ public final class GameEventManager {
 
         // 26. The Floor is Lava
         ALL_EVENTS.add(new GameEvent() {
-            @Override public String getName() { return "The Floor is Lava"; }
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_26"); }
             @Override public boolean isInstant() { return false; }
             @Override
             public void execute(Player player, App plugin, int eventSeconds) {
@@ -354,7 +354,7 @@ public final class GameEventManager {
 
         // 27. Rapid Brush Clearing
         ALL_EVENTS.add(new GameEvent() {
-            @Override public String getName() { return "Rapid Brush Clearing"; }
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_27"); }
             @Override public boolean isInstant() { return true; }
             @Override
             public void execute(Player player, App plugin, int eventSeconds) {
@@ -381,7 +381,7 @@ public final class GameEventManager {
 
         // 28. MLG Water
         ALL_EVENTS.add(new GameEvent() {
-            @Override public String getName() { return "MLG Water"; }
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_28"); }
             @Override public boolean isInstant() { return true; }
             @Override
             public void execute(Player player, App plugin, int eventSeconds) {
@@ -392,7 +392,7 @@ public final class GameEventManager {
 
         // 29. Bee Movie
         ALL_EVENTS.add(new GameEvent() {
-            @Override public String getName() { return "Bee Movie"; }
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_29"); }
             @Override public boolean isInstant() { return true; }
             @Override
             public void execute(Player player, App plugin, int eventSeconds) {
@@ -405,7 +405,7 @@ public final class GameEventManager {
 
         // 30. Touch Grass
         ALL_EVENTS.add(new GameEvent() {
-            @Override public String getName() { return "Touch Grass"; }
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_30"); }
             @Override public boolean isInstant() { return true; }
             @Override
             public void execute(Player player, App plugin, int eventSeconds) {
@@ -417,14 +417,14 @@ public final class GameEventManager {
 
         // 31. No U Shield
         ALL_EVENTS.add(new GameEvent() {
-            @Override public String getName() { return "No U Shield"; }
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_31"); }
             @Override public boolean isInstant() { return true; }
             @Override
             public void execute(Player player, App plugin, int eventSeconds) {
                 ItemStack shield = new ItemStack(Material.SHIELD);
                 ItemMeta meta = shield.getItemMeta();
                 if (meta != null) {
-                    meta.displayName(SERIALIZER.deserialize("§bNo U"));
+                    meta.displayName(twitchvotesminecraft.App.getInstance().getMessageManager().getComponent("event_entities.no_u"));
                     shield.setItemMeta(meta);
                 }
                 player.getInventory().addItem(shield);
@@ -433,7 +433,7 @@ public final class GameEventManager {
 
         // 32. Gotta Go Fast
         ALL_EVENTS.add(new GameEvent() {
-            @Override public String getName() { return "Gotta Go Fast"; }
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_32"); }
             @Override public boolean isInstant() { return false; }
             @Override
             public void execute(Player player, App plugin, int eventSeconds) {
@@ -443,7 +443,7 @@ public final class GameEventManager {
 
         // 33. Snail Mode
         ALL_EVENTS.add(new GameEvent() {
-            @Override public String getName() { return "Snail Mode"; }
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_33"); }
             @Override public boolean isInstant() { return false; }
             @Override
             public void execute(Player player, App plugin, int eventSeconds) {
@@ -453,7 +453,7 @@ public final class GameEventManager {
 
         // 34. Moon Gravity
         ALL_EVENTS.add(new GameEvent() {
-            @Override public String getName() { return "Moon Gravity"; }
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_34"); }
             @Override public boolean isInstant() { return false; }
             @Override
             public void execute(Player player, App plugin, int eventSeconds) {
@@ -464,7 +464,7 @@ public final class GameEventManager {
 
         // 35. Jumpscare
         ALL_EVENTS.add(new GameEvent() {
-            @Override public String getName() { return "Jumpscare!"; }
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_35"); }
             @Override public boolean isInstant() { return true; }
             @Override
             public void execute(Player player, App plugin, int eventSeconds) {
@@ -475,14 +475,14 @@ public final class GameEventManager {
 
         // 36. Fake Diamonds
         ALL_EVENTS.add(new GameEvent() {
-            @Override public String getName() { return "Fake Diamonds"; }
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_36"); }
             @Override public boolean isInstant() { return true; }
             @Override
             public void execute(Player player, App plugin, int eventSeconds) {
                 ItemStack fakeDiamond = new ItemStack(Material.DIRT, 5);
                 ItemMeta meta = fakeDiamond.getItemMeta();
                 if (meta != null) {
-                    meta.displayName(SERIALIZER.deserialize("§bDiamond"));
+                    meta.displayName(twitchvotesminecraft.App.getInstance().getMessageManager().getComponent("event_entities.diamond"));
                     fakeDiamond.setItemMeta(meta);
                 }
                 player.getInventory().addItem(fakeDiamond);
@@ -491,7 +491,7 @@ public final class GameEventManager {
 
         // 37. Vegan Mode
         ALL_EVENTS.add(new GameEvent() {
-            @Override public String getName() { return "Vegan Mode"; }
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_37"); }
             @Override public boolean isInstant() { return true; }
             @Override
             public void execute(Player player, App plugin, int eventSeconds) {
@@ -508,7 +508,7 @@ public final class GameEventManager {
 
         // 38. Gluten Free
         ALL_EVENTS.add(new GameEvent() {
-            @Override public String getName() { return "Gluten Free"; }
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_38"); }
             @Override public boolean isInstant() { return true; }
             @Override
             public void execute(Player player, App plugin, int eventSeconds) {
@@ -524,7 +524,7 @@ public final class GameEventManager {
 
         // 39. American Dream
         ALL_EVENTS.add(new GameEvent() {
-            @Override public String getName() { return "American Dream"; }
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_39"); }
             @Override public boolean isInstant() { return true; }
             @Override
             public void execute(Player player, App plugin, int eventSeconds) {
@@ -536,7 +536,7 @@ public final class GameEventManager {
 
         // 40. Social Distancing
         ALL_EVENTS.add(new GameEvent() {
-            @Override public String getName() { return "Social Distancing"; }
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_40"); }
             @Override public boolean isInstant() { return true; }
             @Override
             public void execute(Player player, App plugin, int eventSeconds) {
@@ -550,7 +550,7 @@ public final class GameEventManager {
 
         // 41. Stonks
         ALL_EVENTS.add(new GameEvent() {
-            @Override public String getName() { return "Stonks (+1 Emerald)"; }
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_41"); }
             @Override public boolean isInstant() { return true; }
             @Override
             public void execute(Player player, App plugin, int eventSeconds) {
@@ -560,7 +560,7 @@ public final class GameEventManager {
 
         // 42. Not Stonks
         ALL_EVENTS.add(new GameEvent() {
-            @Override public String getName() { return "Not Stonks (-Emeralds)"; }
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_42"); }
             @Override public boolean isInstant() { return true; }
             @Override
             public void execute(Player player, App plugin, int eventSeconds) {
@@ -570,7 +570,7 @@ public final class GameEventManager {
 
         // 43. Build a Snowman
         ALL_EVENTS.add(new GameEvent() {
-            @Override public String getName() { return "Build a Snowman"; }
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_43"); }
             @Override public boolean isInstant() { return true; }
             @Override
             public void execute(Player player, App plugin, int eventSeconds) {
@@ -583,7 +583,7 @@ public final class GameEventManager {
 
         // 44. Spider-Man
         ALL_EVENTS.add(new GameEvent() {
-            @Override public String getName() { return "Spider-Man"; }
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_44"); }
             @Override public boolean isInstant() { return true; }
             @Override
             public void execute(Player player, App plugin, int eventSeconds) {
@@ -594,7 +594,7 @@ public final class GameEventManager {
 
         // 45. Trapped! (Obsidian Enclosure)
         ALL_EVENTS.add(new GameEvent() {
-            @Override public String getName() { return "Trapped! (Obsidian)"; }
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_45"); }
             @Override public boolean isInstant() { return false; }
             @Override
             public void execute(Player player, App plugin, int eventSeconds) {
@@ -620,7 +620,7 @@ public final class GameEventManager {
 
         // 46. Cage Match
         ALL_EVENTS.add(new GameEvent() {
-            @Override public String getName() { return "Cage Match"; }
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_46"); }
             @Override public boolean isInstant() { return false; }
             @Override
             public void execute(Player player, App plugin, int eventSeconds) {
@@ -648,7 +648,7 @@ public final class GameEventManager {
 
         // 47. Free Dirt
         ALL_EVENTS.add(new GameEvent() {
-            @Override public String getName() { return "Free Dirt x64"; }
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_47"); }
             @Override public boolean isInstant() { return true; }
             @Override
             public void execute(Player player, App plugin, int eventSeconds) {
@@ -658,7 +658,7 @@ public final class GameEventManager {
 
         // 48. It's Dangerous Here
         ALL_EVENTS.add(new GameEvent() {
-            @Override public String getName() { return "It's Dangerous Here"; }
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_48"); }
             @Override public boolean isInstant() { return true; }
             @Override
             public void execute(Player player, App plugin, int eventSeconds) {
@@ -668,7 +668,7 @@ public final class GameEventManager {
 
         // 49. 404 Not Found
         ALL_EVENTS.add(new GameEvent() {
-            @Override public String getName() { return "404 Not Found"; }
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_49"); }
             @Override public boolean isInstant() { return false; }
             @Override
             public void execute(Player player, App plugin, int eventSeconds) {
@@ -679,7 +679,7 @@ public final class GameEventManager {
 
         // 50. Mining Away (Haste V)
         ALL_EVENTS.add(new GameEvent() {
-            @Override public String getName() { return "Mining Away (Haste V)"; }
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_50"); }
             @Override public boolean isInstant() { return false; }
             @Override
             public void execute(Player player, App plugin, int eventSeconds) {
@@ -689,7 +689,7 @@ public final class GameEventManager {
 
         // 51. Bouncy Ground
         ALL_EVENTS.add(new GameEvent() {
-            @Override public String getName() { return "Bouncy Ground"; }
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_51"); }
             @Override public boolean isInstant() { return false; }
             @Override
             public void execute(Player player, App plugin, int eventSeconds) {
@@ -704,7 +704,7 @@ public final class GameEventManager {
 
         // 52. No More Protection (Drop Armor)
         ALL_EVENTS.add(new GameEvent() {
-            @Override public String getName() { return "No More Protection"; }
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_52"); }
             @Override public boolean isInstant() { return true; }
             @Override
             public void execute(Player player, App plugin, int eventSeconds) {
@@ -720,7 +720,7 @@ public final class GameEventManager {
 
         // 53. Iron Man
         ALL_EVENTS.add(new GameEvent() {
-            @Override public String getName() { return "Iron Man Armor"; }
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_53"); }
             @Override public boolean isInstant() { return true; }
             @Override
             public void execute(Player player, App plugin, int eventSeconds) {
@@ -734,7 +734,7 @@ public final class GameEventManager {
 
         // 54. Inventory Clutter
         ALL_EVENTS.add(new GameEvent() {
-            @Override public String getName() { return "Inventory Clutter"; }
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_54"); }
             @Override public boolean isInstant() { return true; }
             @Override
             public void execute(Player player, App plugin, int eventSeconds) {
@@ -749,7 +749,7 @@ public final class GameEventManager {
 
         // 55. Double Trouble
         ALL_EVENTS.add(new GameEvent() {
-            @Override public String getName() { return "Double Trouble"; }
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_55"); }
             @Override public boolean isInstant() { return true; }
             @Override
             public void execute(Player player, App plugin, int eventSeconds) {
@@ -763,7 +763,7 @@ public final class GameEventManager {
 
         // 56. Flashbang
         ALL_EVENTS.add(new GameEvent() {
-            @Override public String getName() { return "Flashbang"; }
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_56"); }
             @Override public boolean isInstant() { return false; }
             @Override
             public void execute(Player player, App plugin, int eventSeconds) {

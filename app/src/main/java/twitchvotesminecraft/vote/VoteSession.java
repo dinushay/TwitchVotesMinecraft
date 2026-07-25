@@ -1,6 +1,5 @@
 package twitchvotesminecraft.vote;
 
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Bukkit;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
@@ -22,8 +21,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class VoteSession {
-
-    private static final LegacyComponentSerializer SERIALIZER = LegacyComponentSerializer.legacySection();
 
     private final App plugin;
     private final Player player;
@@ -62,7 +59,7 @@ public class VoteSession {
 
     public void start() {
         chatClient.connect();
-        player.sendMessage(SERIALIZER.deserialize("§a[TwitchVotesMinecraft] Connected to Twitch channel #" + channel + ". Starting voting cycle!"));
+        player.sendMessage(plugin.getMessageManager().getComponent("session.connected", java.util.Map.of("%channel%", channel)));
         startVotingPhase();
     }
 
@@ -98,12 +95,12 @@ public class VoteSession {
 
         // Setup Scoreboard ONLY for Voting Phase
         scoreboard = Bukkit.getScoreboardManager().getNewScoreboard();
-        objective = scoreboard.registerNewObjective("twitchvote", Criteria.DUMMY, SERIALIZER.deserialize("§5§lTwitch Vote"));
+        objective = scoreboard.registerNewObjective("twitchvote", Criteria.DUMMY, plugin.getMessageManager().getComponent("scoreboard.title"));
         objective.setDisplaySlot(DisplaySlot.SIDEBAR);
         player.setScoreboard(scoreboard);
 
         // Setup BossBar
-        String title = "§d§lVoting ends in: §e" + voteSeconds + "s";
+        String title = plugin.getMessageManager().getString("bossbar.voting", java.util.Map.of("%time%", String.valueOf(voteSeconds)));
         if (bossBar == null) {
             bossBar = Bukkit.createBossBar(title, BarColor.PURPLE, BarStyle.SOLID);
             bossBar.addPlayer(player);
@@ -135,7 +132,7 @@ public class VoteSession {
                     return;
                 }
 
-                bossBar.setTitle("§d§lVoting ends in: §e" + remaining + "s");
+                bossBar.setTitle(plugin.getMessageManager().getString("bossbar.voting", java.util.Map.of("%time%", String.valueOf(remaining))));
                 bossBar.setProgress(Math.max(0.0, Math.min(1.0, (double) remaining / voteSeconds)));
             }
         }.runTaskTimer(plugin, 20L, 20L);
@@ -174,10 +171,10 @@ public class VoteSession {
         int winVotes = counts[winningIndex];
         int winPercent = (totalVotes > 0) ? (int) Math.round(((double) winVotes / totalVotes) * 100.0) : 0;
 
-        player.sendMessage(SERIALIZER.deserialize(
-                "§a[TwitchVotesMinecraft] Voting ended! Winner: §e" + winningEvent.getName()
-                + " §a(" + winPercent + "% votes)! Executing now..."
-        ));
+        player.sendMessage(plugin.getMessageManager().getComponent("session.vote-ended", java.util.Map.of(
+                "%event%", winningEvent.getName(),
+                "%percent%", String.valueOf(winPercent)
+        )));
 
         // Execute Winner Event targeted at player
         winningEvent.execute(player, plugin, eventSeconds);
@@ -198,7 +195,10 @@ public class VoteSession {
 
         isVotingPhase = false;
         bossBar.setColor(BarColor.GREEN);
-        bossBar.setTitle("§e§lEvent Active (§a" + winningEvent.getName() + "§e): §f" + eventSeconds + "s");
+        bossBar.setTitle(plugin.getMessageManager().getString("bossbar.event-active", java.util.Map.of(
+                "%event%", winningEvent.getName(),
+                "%time%", String.valueOf(eventSeconds)
+        )));
         bossBar.setProgress(1.0);
 
         if (activeTask != null) activeTask.cancel();
@@ -220,7 +220,10 @@ public class VoteSession {
                     return;
                 }
 
-                bossBar.setTitle("§e§lEvent Active (§a" + winningEvent.getName() + "§e): §f" + remaining + "s");
+                bossBar.setTitle(plugin.getMessageManager().getString("bossbar.event-active", java.util.Map.of(
+                        "%event%", winningEvent.getName(),
+                        "%time%", String.valueOf(remaining)
+                )));
                 bossBar.setProgress(Math.max(0.0, Math.min(1.0, (double) remaining / eventSeconds)));
             }
         }.runTaskTimer(plugin, 20L, 20L);
@@ -241,7 +244,7 @@ public class VoteSession {
         }
 
         bossBar.setColor(BarColor.BLUE);
-        bossBar.setTitle("§b§lNext voting in: §e" + cooldownSeconds + "s");
+        bossBar.setTitle(plugin.getMessageManager().getString("bossbar.next-vote", java.util.Map.of("%time%", String.valueOf(cooldownSeconds))));
         bossBar.setProgress(1.0);
 
         if (activeTask != null) activeTask.cancel();
@@ -263,7 +266,7 @@ public class VoteSession {
                     return;
                 }
 
-                bossBar.setTitle("§b§lNext voting in: §e" + remaining + "s");
+                bossBar.setTitle(plugin.getMessageManager().getString("bossbar.next-vote", java.util.Map.of("%time%", String.valueOf(remaining))));
                 bossBar.setProgress(Math.max(0.0, Math.min(1.0, (double) remaining / cooldownSeconds)));
             }
         }.runTaskTimer(plugin, 20L, 20L);
@@ -310,6 +313,6 @@ public class VoteSession {
         }
 
         objective.getScore(" §7").setScore(scoreIndex--);
-        objective.getScore("§7Total Votes: §f" + totalVotes).setScore(scoreIndex);
+        objective.getScore(plugin.getMessageManager().getString("scoreboard.total-votes", java.util.Map.of("%total%", String.valueOf(totalVotes)))).setScore(scoreIndex);
     }
 }
