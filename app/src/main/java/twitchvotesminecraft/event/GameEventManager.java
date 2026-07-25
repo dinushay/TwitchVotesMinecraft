@@ -864,6 +864,25 @@ public final class GameEventManager {
                 });
             }
         });
+
+        // 58. Random Teleport
+        ALL_EVENTS.add(new GameEvent() {
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_58"); }
+            @Override public String getDescription() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("event_descriptions.event_58"); }
+            @Override public boolean isInstant() { return true; }
+            @Override
+            public void execute(Player player, App plugin, int eventSeconds) {
+                Location loc = player.getLocation();
+                int xOffset = ThreadLocalRandom.current().nextInt(-50, 51);
+                int zOffset = ThreadLocalRandom.current().nextInt(-50, 51);
+                int newX = loc.getBlockX() + xOffset;
+                int newZ = loc.getBlockZ() + zOffset;
+                int newY = loc.getWorld().getHighestBlockYAt(newX, newZ);
+                Location newLoc = new Location(loc.getWorld(), newX + 0.5, newY + 1, newZ + 0.5, loc.getYaw(), loc.getPitch());
+                player.teleport(newLoc);
+                player.playSound(newLoc, Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 1.0f);
+            }
+        });
     }
 
     private GameEventManager() {}
