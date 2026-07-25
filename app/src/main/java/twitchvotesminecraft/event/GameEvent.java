@@ -10,6 +10,11 @@ public interface GameEvent {
     String getName();
 
     /**
+     * @return Brief description of the event's effect.
+     */
+    String getDescription();
+
+    /**
      * @return true if the event executes instantly, false if it runs for a duration (eventSeconds).
      */
     boolean isInstant();
