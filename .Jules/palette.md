@@ -1,3 +1,3 @@
-## 2024-05-14 - Minecraft Settings GUI Improvements
-**Learning:** In Minecraft chest GUIs, players shouldn't be forced to rely on keyboard keys (Esc/E) to close menus. Explicit exit buttons (especially in the bottom right corner, slot 26) improve accessibility. Furthermore, changing background items (like stained glass panes) provides powerful, ambient inline validation for configuration screens.
-**Action:** Always consider adding explicit "Close" or "Back" buttons to chest-based UIs and leverage background block colors (e.g., Red vs. Gray stained glass) for ambient state feedback.
+## 2026-07-25 - GUI Sound Boundaries
+**Learning:** Auditory feedback in Bukkit GUIs significantly improves UX when reaching input limits.
+**Action:** Use negative sound effects like `ENTITY_VILLAGER_NO` when users attempt to push settings past their bounds, rather than repeating positive click sounds.
