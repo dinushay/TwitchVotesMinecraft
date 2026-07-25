@@ -1,0 +1,3 @@
+## 2024-05-24 - Bukkit Scheduler Bottleneck in Twitch Chat
+**Learning:** In Bukkit/Spigot plugins, using `Bukkit.getScheduler().runTask()` to synchronize an action for every message received from a high-throughput stream (like Twitch Chat) creates severe TPS (Ticks Per Second) drops because it queues a task on the main server thread for every message.
+**Action:** Instead of dispatching a sync task per message, batch updates on the main thread using an existing repeating task (like a 1-second countdown timer) when high-frequency asynchronous events need to update UI elements (like Scoreboards).
