@@ -94,6 +94,11 @@ public final class SettingsGUI {
                     plugin.getMessageManager().getComponent("gui.confirm"),
                     List.of(plugin.getMessageManager().getComponent("gui.confirm-lore"))
             );
+            ItemMeta meta = confirmItem.getItemMeta();
+            if (meta != null) {
+                meta.setEnchantmentGlintOverride(true);
+                confirmItem.setItemMeta(meta);
+            }
         } else {
             confirmItem = createItem(
                     Material.RED_CONCRETE,
