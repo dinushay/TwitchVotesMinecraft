@@ -104,6 +104,7 @@ events:
   event_56: "Flashbang"
   event_57: "Gravity Inversion"
   event_58: "Random Teleport"
+  event_59: "Anvil Drop"
 
 event_entities:
   friendly_creeper: "&aFriendly Creeper"
@@ -172,3 +173,4 @@ event_descriptions:
   event_56: "&8[-] Flashbang (Blindness & Nausea)"
   event_57: "&8[+] Entities Thrown Upward"
   event_58: "&8[-] Randomly Teleported"
+  event_59: "&8[-] Anvil Dropped Above You"
