@@ -26,15 +26,15 @@ gui:
   click-modify-small: "&7Left-Click: &a+1 &7| Right-Click: &c-1"
   range-time: "&7Range: 15s - 120s"
   range-count: "&7Range: 2 - 5"
-  confirm: "&a&lConfirm & Save"
-  confirm-lore: "&7Click to save default settings to config.yml."
+  confirm: "&a&lSave & Start Session"
+  confirm-lore: "&7Click to save settings and start voting session."
   cannot-save: "&c&lCannot Save"
   cannot-save-lore1: "&7Event + Vote seconds cannot"
   cannot-save-lore2: "&7exceed Interval seconds!"
   close: "&c&lClose"
   close-lore: "&7Click to close without saving."
   cannot-save-msg: "&c[TwitchVotesMinecraft] Cannot save! Event Seconds (%event%s) + Vote Seconds (%vote%s) = %sum%s, which exceeds Interval Seconds (%interval%s)."
-  saved-msg: "&a[TwitchVotesMinecraft] Default settings successfully saved to config.yml!"
+  saved-msg: "&a[TwitchVotesMinecraft] Default settings successfully saved to config.yml! Starting voting session..."
 
 bossbar:
   voting: "&d&lVoting ends in: &e%time%s"
