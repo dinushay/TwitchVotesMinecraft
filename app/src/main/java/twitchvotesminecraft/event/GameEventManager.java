@@ -883,6 +883,19 @@ public final class GameEventManager {
                 player.playSound(newLoc, Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 1.0f);
             }
         });
+
+        // 59. Anvil Drop
+        ALL_EVENTS.add(new GameEvent() {
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_59"); }
+            @Override public String getDescription() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("event_descriptions.event_59"); }
+            @Override public boolean isInstant() { return true; }
+            @Override
+            public void execute(Player player, App plugin, int eventSeconds) {
+                Location loc = player.getLocation();
+                Location spawnLoc = loc.clone().add(0, 5, 0);
+                spawnLoc.getWorld().spawnFallingBlock(spawnLoc, Material.ANVIL.createBlockData());
+            }
+        });
     }
 
     private GameEventManager() {}
