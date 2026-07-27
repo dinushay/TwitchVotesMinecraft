@@ -48,6 +48,7 @@ public final class SettingsGUI {
                 plugin.getMessageManager().getComponent("gui.interval-seconds", java.util.Map.of("%val%", String.valueOf(holder.getIntervalSeconds()))),
                 List.of(
                     plugin.getMessageManager().getComponent("gui.click-modify"),
+                    plugin.getMessageManager().getComponent("gui.click-modify-shift"),
                     plugin.getMessageManager().getComponent("gui.range-time")
                 )
         );
@@ -59,6 +60,7 @@ public final class SettingsGUI {
                 plugin.getMessageManager().getComponent("gui.event-seconds", java.util.Map.of("%val%", String.valueOf(holder.getEventSeconds()))),
                 List.of(
                     plugin.getMessageManager().getComponent("gui.click-modify"),
+                    plugin.getMessageManager().getComponent("gui.click-modify-shift"),
                     plugin.getMessageManager().getComponent("gui.range-time")
                 )
         );
@@ -70,6 +72,7 @@ public final class SettingsGUI {
                 plugin.getMessageManager().getComponent("gui.vote-seconds", java.util.Map.of("%val%", String.valueOf(holder.getVoteSeconds()))),
                 List.of(
                     plugin.getMessageManager().getComponent("gui.click-modify"),
+                    plugin.getMessageManager().getComponent("gui.click-modify-shift"),
                     plugin.getMessageManager().getComponent("gui.range-time")
                 )
         );
