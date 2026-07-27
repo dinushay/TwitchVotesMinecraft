@@ -883,6 +883,17 @@ public final class GameEventManager {
                 player.playSound(newLoc, Sound.ENTITY_ENDERMAN_TELEPORT, 1.0f, 1.0f);
             }
         });
+
+        // 59. TNT Surprise
+        ALL_EVENTS.add(new GameEvent() {
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_59"); }
+            @Override public String getDescription() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("event_descriptions.event_59"); }
+            @Override public boolean isInstant() { return true; }
+            @Override
+            public void execute(Player player, App plugin, int eventSeconds) {
+                player.getWorld().spawnEntity(player.getLocation(), EntityType.TNT);
+            }
+        });
     }
 
     private GameEventManager() {}
