@@ -23,6 +23,7 @@ gui:
   vote-seconds: "&eVote Seconds: &b%val%s"
   max-events: "&eMax Voteable Events: &b%val%"
   click-modify: "&7Left-Click: &a+5s &7| Right-Click: &c-5s"
+  click-modify-shift: "&7Shift-Left: &a+15s &7| Shift-Right: &c-15s"
   click-modify-small: "&7Left-Click: &a+1 &7| Right-Click: &c-1"
   range-time: "&7Range: 15s - 120s"
   range-count: "&7Range: 2 - 5"

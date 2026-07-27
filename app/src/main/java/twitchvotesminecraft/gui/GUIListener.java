@@ -37,7 +37,15 @@ public class GUIListener implements Listener {
         switch (slot) {
             case 10 -> { // Interval Seconds (15 - 120)
                 int oldValue = holder.getIntervalSeconds();
-                if (click.isLeftClick()) {
+                if (click == ClickType.SHIFT_LEFT) {
+                    int newValue = Math.min(120, oldValue + 15);
+                    holder.setIntervalSeconds(newValue);
+                    playClickSound(player, oldValue, newValue, true);
+                } else if (click == ClickType.SHIFT_RIGHT) {
+                    int newValue = Math.max(15, oldValue - 15);
+                    holder.setIntervalSeconds(newValue);
+                    playClickSound(player, oldValue, newValue, false);
+                } else if (click.isLeftClick()) {
                     int newValue = Math.min(120, oldValue + 5);
                     holder.setIntervalSeconds(newValue);
                     playClickSound(player, oldValue, newValue, true);
@@ -49,7 +57,15 @@ public class GUIListener implements Listener {
             }
             case 11 -> { // Event Seconds (15 - 120)
                 int oldValue = holder.getEventSeconds();
-                if (click.isLeftClick()) {
+                if (click == ClickType.SHIFT_LEFT) {
+                    int newValue = Math.min(120, oldValue + 15);
+                    holder.setEventSeconds(newValue);
+                    playClickSound(player, oldValue, newValue, true);
+                } else if (click == ClickType.SHIFT_RIGHT) {
+                    int newValue = Math.max(15, oldValue - 15);
+                    holder.setEventSeconds(newValue);
+                    playClickSound(player, oldValue, newValue, false);
+                } else if (click.isLeftClick()) {
                     int newValue = Math.min(120, oldValue + 5);
                     holder.setEventSeconds(newValue);
                     playClickSound(player, oldValue, newValue, true);
@@ -61,7 +77,15 @@ public class GUIListener implements Listener {
             }
             case 12 -> { // Vote Seconds (15 - 120)
                 int oldValue = holder.getVoteSeconds();
-                if (click.isLeftClick()) {
+                if (click == ClickType.SHIFT_LEFT) {
+                    int newValue = Math.min(120, oldValue + 15);
+                    holder.setVoteSeconds(newValue);
+                    playClickSound(player, oldValue, newValue, true);
+                } else if (click == ClickType.SHIFT_RIGHT) {
+                    int newValue = Math.max(15, oldValue - 15);
+                    holder.setVoteSeconds(newValue);
+                    playClickSound(player, oldValue, newValue, false);
+                } else if (click.isLeftClick()) {
                     int newValue = Math.min(120, oldValue + 5);
                     holder.setVoteSeconds(newValue);
                     playClickSound(player, oldValue, newValue, true);
