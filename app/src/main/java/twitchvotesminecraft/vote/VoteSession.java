@@ -111,6 +111,8 @@ public class VoteSession {
         bossBar.setProgress(1.0);
         bossBar.setVisible(true);
 
+        player.playSound(player.getLocation(), org.bukkit.Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 1.0f);
+
         updateScoreboard();
 
         if (activeTask != null) activeTask.cancel();
@@ -126,6 +128,9 @@ public class VoteSession {
                 }
 
                 remaining--;
+                if (remaining <= 3 && remaining > 0) {
+                    player.playSound(player.getLocation(), org.bukkit.Sound.UI_BUTTON_CLICK, 1.0f, 1.0f);
+                }
                 if (remaining <= 0) {
                     cancel();
                     finishVotingPhase();
@@ -179,6 +184,8 @@ public class VoteSession {
                 "%percent%", String.valueOf(winPercent)
         )));
         player.sendMessage(net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacyAmpersand().deserialize(winningEvent.getDescription()));
+
+        player.playSound(player.getLocation(), org.bukkit.Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.0f);
 
         // Execute Winner Event targeted at player
         winningEvent.execute(player, plugin, eventSeconds);
