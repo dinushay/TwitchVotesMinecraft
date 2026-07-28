@@ -894,6 +894,22 @@ public final class GameEventManager {
                 player.getWorld().spawnEntity(player.getLocation(), EntityType.TNT);
             }
         });
+
+        // 60. Anvil Rain
+        ALL_EVENTS.add(new GameEvent() {
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_60"); }
+            @Override public String getDescription() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("event_descriptions.event_60"); }
+            @Override public boolean isInstant() { return true; }
+            @Override
+            public void execute(Player player, App plugin, int eventSeconds) {
+                player.playSound(player.getLocation(), Sound.BLOCK_ANVIL_PLACE, 1.0f, 1.0f);
+                for (int i = 0; i < 3; i++) {
+                    Location loc = getRandomNearbyLocation(player.getLocation(), 3);
+                    loc.setY(loc.getY() + 10);
+                    player.getWorld().spawnFallingBlock(loc, Material.ANVIL.createBlockData());
+                }
+            }
+        });
     }
 
     private GameEventManager() {}

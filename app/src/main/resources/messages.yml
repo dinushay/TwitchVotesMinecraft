@@ -105,6 +105,7 @@ events:
   event_57: "Gravity Inversion"
   event_58: "Random Teleport"
   event_59: "TNT Surprise"
+  event_60: "Anvil Rain"
 
 event_entities:
   friendly_creeper: "&aFriendly Creeper"
@@ -174,3 +175,4 @@ event_descriptions:
   event_57: "&8[+] Entities Thrown Upward"
   event_58: "&8[-] Randomly Teleported"
   event_59: "&8[-] Spawned Primed TNT"
+  event_60: "&8[-] Anvils Falling from the Sky"
