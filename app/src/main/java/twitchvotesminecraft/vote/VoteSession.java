@@ -111,6 +111,9 @@ public class VoteSession {
         bossBar.setProgress(1.0);
         bossBar.setVisible(true);
 
+        // 🎨 Palette: Play subtle sound when voting starts
+        player.playSound(player.getLocation(), org.bukkit.Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 1.0f);
+
         updateScoreboard();
 
         if (activeTask != null) activeTask.cancel();
@@ -130,6 +133,11 @@ public class VoteSession {
                     cancel();
                     finishVotingPhase();
                     return;
+                }
+
+                // 🎨 Palette: Dual-channel feedback (audio/visual) for final countdown ticks
+                if (remaining <= 3) {
+                    player.playSound(player.getLocation(), org.bukkit.Sound.UI_BUTTON_CLICK, 1.0f, 1.0f);
                 }
 
                 bossBar.setTitle(plugin.getMessageManager().getString("bossbar.voting", java.util.Map.of("%time%", String.valueOf(remaining))));
@@ -179,6 +187,9 @@ public class VoteSession {
                 "%percent%", String.valueOf(winPercent)
         )));
         player.sendMessage(net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacyAmpersand().deserialize(winningEvent.getDescription()));
+
+        // 🎨 Palette: Play distinct sound when winning event is announced
+        player.playSound(player.getLocation(), org.bukkit.Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.0f);
 
         // Execute Winner Event targeted at player
         winningEvent.execute(player, plugin, eventSeconds);
