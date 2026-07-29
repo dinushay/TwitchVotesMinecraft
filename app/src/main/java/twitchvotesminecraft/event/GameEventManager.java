@@ -894,6 +894,20 @@ public final class GameEventManager {
                 player.getWorld().spawnEntity(player.getLocation(), EntityType.TNT);
             }
         });
+
+        // 60. Pig Mount
+        ALL_EVENTS.add(new GameEvent() {
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_60"); }
+            @Override public String getDescription() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("event_descriptions.event_60"); }
+            @Override public boolean isInstant() { return true; }
+            @Override
+            public void execute(Player player, App plugin, int eventSeconds) {
+                Pig pig = (Pig) player.getWorld().spawnEntity(player.getLocation(), EntityType.PIG);
+                pig.setSaddle(true);
+                pig.addPassenger(player);
+                player.playSound(player.getLocation(), Sound.ENTITY_PIG_AMBIENT, 1.0f, 1.0f);
+            }
+        });
     }
 
     private GameEventManager() {}
