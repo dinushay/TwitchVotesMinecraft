@@ -894,6 +894,30 @@ public final class GameEventManager {
                 player.getWorld().spawnEntity(player.getLocation(), EntityType.TNT);
             }
         });
+
+        // 60. Disco Party
+        ALL_EVENTS.add(new GameEvent() {
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_60"); }
+            @Override public String getDescription() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("event_descriptions.event_60"); }
+            @Override public boolean isInstant() { return false; }
+            @Override
+            public void execute(Player player, App plugin, int eventSeconds) {
+                player.playSound(player.getLocation(), Sound.MUSIC_DISC_PIGSTEP, 1.0f, 1.0f);
+                player.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, eventSeconds * 20, 0));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, eventSeconds * 20, 2));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP_BOOST, eventSeconds * 20, 2));
+
+                org.bukkit.entity.Firework fw = (org.bukkit.entity.Firework) player.getWorld().spawnEntity(player.getLocation(), EntityType.FIREWORK_ROCKET);
+                org.bukkit.inventory.meta.FireworkMeta fwm = fw.getFireworkMeta();
+                fwm.addEffect(org.bukkit.FireworkEffect.builder()
+                        .withColor(org.bukkit.Color.FUCHSIA, org.bukkit.Color.LIME, org.bukkit.Color.AQUA)
+                        .with(org.bukkit.FireworkEffect.Type.BALL_LARGE)
+                        .withTrail()
+                        .build());
+                fwm.setPower(1);
+                fw.setFireworkMeta(fwm);
+            }
+        });
     }
 
     private GameEventManager() {}
