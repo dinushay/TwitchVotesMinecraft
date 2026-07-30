@@ -112,6 +112,7 @@ public class VoteSession {
         bossBar.setVisible(true);
 
         updateScoreboard();
+        player.playSound(player.getLocation(), org.bukkit.Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 1.0f);
 
         if (activeTask != null) activeTask.cancel();
 
@@ -130,6 +131,10 @@ public class VoteSession {
                     cancel();
                     finishVotingPhase();
                     return;
+                }
+
+                if (remaining <= 5 && remaining > 0) {
+                    player.playSound(player.getLocation(), org.bukkit.Sound.UI_BUTTON_CLICK, 1.0f, 1.5f);
                 }
 
                 bossBar.setTitle(plugin.getMessageManager().getString("bossbar.voting", java.util.Map.of("%time%", String.valueOf(remaining))));
@@ -170,6 +175,7 @@ public class VoteSession {
 
         int winningIndex = topIndices.get(ThreadLocalRandom.current().nextInt(topIndices.size()));
         winningEvent = currentOptions.get(winningIndex);
+        player.playSound(player.getLocation(), org.bukkit.Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.0f);
 
         int winVotes = counts[winningIndex];
         int winPercent = (totalVotes > 0) ? (int) Math.round(((double) winVotes / totalVotes) * 100.0) : 0;
@@ -224,6 +230,10 @@ public class VoteSession {
                     return;
                 }
 
+                if (remaining <= 3 && remaining > 0) {
+                    player.playSound(player.getLocation(), org.bukkit.Sound.UI_BUTTON_CLICK, 1.0f, 1.5f);
+                }
+
                 bossBar.setTitle(plugin.getMessageManager().getString("bossbar.event-active", java.util.Map.of(
                         "%event%", winningEvent.getName(),
                         "%time%", String.valueOf(remaining)
@@ -268,6 +278,10 @@ public class VoteSession {
                     cancel();
                     startVotingPhase();
                     return;
+                }
+
+                if (remaining <= 3 && remaining > 0) {
+                    player.playSound(player.getLocation(), org.bukkit.Sound.UI_BUTTON_CLICK, 1.0f, 1.5f);
                 }
 
                 bossBar.setTitle(plugin.getMessageManager().getString("bossbar.next-vote", java.util.Map.of("%time%", String.valueOf(remaining))));
