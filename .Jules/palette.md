@@ -4,3 +4,6 @@
 ## 2024-05-19 - GUI Visual Affordance
 **Learning:** Adding enchantment glint to specific action buttons (like a primary 'Confirm' button) creates a strong visual affordance in Bukkit GUIs, highlighting the primary action clearly for users.
 **Action:** Use `ItemMeta.setEnchantmentGlintOverride(true)` on items that act as primary call-to-action buttons in Minecraft interfaces to draw attention and indicate readiness.
+## 2025-02-12 - Dual-Channel Feedback in Countdowns
+**Learning:** Pairing visual countdowns (like BossBars) with auditory cues (Bukkit Sounds) greatly enhances player awareness, especially in hectic environments.
+**Action:** When implementing time-sensitive visual UI elements, add complementary sound cues (e.g., ticking for countdowns, distinct sounds for phase starts/ends) to provide dual-channel accessibility.
