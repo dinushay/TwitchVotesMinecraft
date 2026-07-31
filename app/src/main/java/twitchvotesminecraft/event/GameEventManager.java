@@ -894,6 +894,21 @@ public final class GameEventManager {
                 player.getWorld().spawnEntity(player.getLocation(), EntityType.TNT);
             }
         });
+
+        // 60. Cow Shower
+        ALL_EVENTS.add(new GameEvent() {
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_60"); }
+            @Override public String getDescription() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("event_descriptions.event_60"); }
+            @Override public boolean isInstant() { return true; }
+            @Override
+            public void execute(Player player, App plugin, int eventSeconds) {
+                Location loc = player.getLocation().add(0, 15, 0);
+                for (int i = 0; i < 10; i++) {
+                    loc.getWorld().spawnEntity(getRandomNearbyLocation(loc, 5), EntityType.COW);
+                }
+                player.playSound(player.getLocation(), Sound.ENTITY_COW_AMBIENT, 1.0f, 1.0f);
+            }
+        });
     }
 
     private GameEventManager() {}
