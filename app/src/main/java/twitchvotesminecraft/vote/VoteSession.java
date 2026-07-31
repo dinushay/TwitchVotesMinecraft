@@ -89,6 +89,7 @@ public class VoteSession {
         }
 
         isVotingPhase = true;
+        player.playSound(player.getLocation(), org.bukkit.Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 1.0f);
         userVotes.clear();
         winningEvent = null;
         currentOptions = GameEventManager.getRandomEvents(maxVoteableEvents);
@@ -126,6 +127,9 @@ public class VoteSession {
                 }
 
                 remaining--;
+                if (remaining <= 3 && remaining > 0) {
+                    player.playSound(player.getLocation(), org.bukkit.Sound.UI_BUTTON_CLICK, 1.0f, 1.0f);
+                }
                 if (remaining <= 0) {
                     cancel();
                     finishVotingPhase();
@@ -173,6 +177,7 @@ public class VoteSession {
 
         int winVotes = counts[winningIndex];
         int winPercent = (totalVotes > 0) ? (int) Math.round(((double) winVotes / totalVotes) * 100.0) : 0;
+        player.playSound(player.getLocation(), org.bukkit.Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.0f);
 
         player.sendMessage(plugin.getMessageManager().getComponent("session.vote-ended", java.util.Map.of(
                 "%event%", winningEvent.getName(),
@@ -264,6 +269,9 @@ public class VoteSession {
                 }
 
                 remaining--;
+                if (remaining <= 3 && remaining > 0) {
+                    player.playSound(player.getLocation(), org.bukkit.Sound.UI_BUTTON_CLICK, 1.0f, 1.0f);
+                }
                 if (remaining <= 0) {
                     cancel();
                     startVotingPhase();
