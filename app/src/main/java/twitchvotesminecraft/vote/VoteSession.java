@@ -112,6 +112,7 @@ public class VoteSession {
         bossBar.setVisible(true);
 
         updateScoreboard();
+        player.playSound(player.getLocation(), org.bukkit.Sound.BLOCK_NOTE_BLOCK_PLING, 1.0f, 1.0f);
 
         if (activeTask != null) activeTask.cancel();
 
@@ -134,6 +135,10 @@ public class VoteSession {
 
                 bossBar.setTitle(plugin.getMessageManager().getString("bossbar.voting", java.util.Map.of("%time%", String.valueOf(remaining))));
                 bossBar.setProgress(Math.max(0.0, Math.min(1.0, (double) remaining / voteSeconds)));
+
+                if (remaining <= 3 && remaining > 0) {
+                    player.playSound(player.getLocation(), org.bukkit.Sound.UI_BUTTON_CLICK, 1.0f, 1.0f);
+                }
 
                 // ⚡ Bolt: Batch update the scoreboard once per second instead of per chat message
                 updateScoreboard();
@@ -179,6 +184,7 @@ public class VoteSession {
                 "%percent%", String.valueOf(winPercent)
         )));
         player.sendMessage(net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacyAmpersand().deserialize(winningEvent.getDescription()));
+        player.playSound(player.getLocation(), org.bukkit.Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.0f);
 
         // Execute Winner Event targeted at player
         winningEvent.execute(player, plugin, eventSeconds);
