@@ -894,6 +894,18 @@ public final class GameEventManager {
                 player.getWorld().spawnEntity(player.getLocation(), EntityType.TNT);
             }
         });
+
+        // 60. To The Moon!
+        ALL_EVENTS.add(new GameEvent() {
+            @Override public String getName() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("events.event_60"); }
+            @Override public String getDescription() { return twitchvotesminecraft.App.getInstance().getMessageManager().getString("event_descriptions.event_60"); }
+            @Override public boolean isInstant() { return true; }
+            @Override
+            public void execute(Player player, App plugin, int eventSeconds) {
+                player.playSound(player.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_LAUNCH, 1.0f, 1.0f);
+                player.setVelocity(new Vector(0, 3.0, 0));
+            }
+        });
     }
 
     private GameEventManager() {}
