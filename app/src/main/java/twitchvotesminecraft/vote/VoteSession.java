@@ -130,6 +130,8 @@ public class VoteSession {
                     cancel();
                     finishVotingPhase();
                     return;
+                } else if (remaining <= 3) {
+                    player.playSound(player.getLocation(), org.bukkit.Sound.UI_BUTTON_CLICK, 1.0f, 1.0f);
                 }
 
                 bossBar.setTitle(plugin.getMessageManager().getString("bossbar.voting", java.util.Map.of("%time%", String.valueOf(remaining))));
@@ -179,6 +181,7 @@ public class VoteSession {
                 "%percent%", String.valueOf(winPercent)
         )));
         player.sendMessage(net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer.legacyAmpersand().deserialize(winningEvent.getDescription()));
+        player.playSound(player.getLocation(), org.bukkit.Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.0f);
 
         // Execute Winner Event targeted at player
         winningEvent.execute(player, plugin, eventSeconds);
@@ -222,6 +225,8 @@ public class VoteSession {
                     cancel();
                     startCooldownPhase();
                     return;
+                } else if (remaining <= 3) {
+                    player.playSound(player.getLocation(), org.bukkit.Sound.UI_BUTTON_CLICK, 1.0f, 1.0f);
                 }
 
                 bossBar.setTitle(plugin.getMessageManager().getString("bossbar.event-active", java.util.Map.of(
@@ -268,6 +273,8 @@ public class VoteSession {
                     cancel();
                     startVotingPhase();
                     return;
+                } else if (remaining <= 3) {
+                    player.playSound(player.getLocation(), org.bukkit.Sound.UI_BUTTON_CLICK, 1.0f, 1.0f);
                 }
 
                 bossBar.setTitle(plugin.getMessageManager().getString("bossbar.next-vote", java.util.Map.of("%time%", String.valueOf(remaining))));
