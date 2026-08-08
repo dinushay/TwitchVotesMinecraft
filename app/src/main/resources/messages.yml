@@ -2,19 +2,20 @@
 # Color codes use the '&' symbol (e.g., &a for Green, &c for Red).
 
 general:
+  prefix: "<b><gradient:#FF7C00:#FFC400>TwitchV</gradient><gradient:#FFC400:#FFC400>otesMinecraft</gradient></b><dark_gray> ┃  </dark_gray><reset>"
   only-in-game: "&cOnly in-game players can execute this command."
-  must-be-op: "&c[TwitchVotesMinecraft] You must be a server Operator (OP) to use this command."
+  must-be-op: "%prefix%&cYou must be a server Operator (OP) to use this command."
   usage: "&cUsage: /%cmd% <twitch-name | cancel>"
-  invalid-syntax: "&c[TwitchVotesMinecraft] Invalid Twitch username syntax! Usernames must be 4-25 alphanumeric characters or underscores."
-  verifying: "&e[TwitchVotesMinecraft] Verifying Twitch channel '%channel%'..."
-  channel-not-found: "&c[TwitchVotesMinecraft] Twitch channel '%channel%' does not exist!"
+  invalid-syntax: "%prefix%&cInvalid Twitch username syntax! Usernames must be 4-25 alphanumeric characters or underscores."
+  verifying: "%prefix%&eVerifying Twitch channel '%channel%'..."
+  channel-not-found: "%prefix%&cTwitch channel '%channel%' does not exist!"
 
 session:
-  cancelled: "&a[TwitchVotesMinecraft] Active Twitch voting session cancelled."
-  no-active-session: "&c[TwitchVotesMinecraft] You do not have an active voting session to cancel."
-  connected: "&a[TwitchVotesMinecraft] Connected to Twitch channel #%channel%. Starting voting cycle!"
-  player-died: "&c[TwitchVotesMinecraft] You died! Active Twitch voting session has been cancelled."
-  vote-ended: "&a[TwitchVotesMinecraft] Voting ended! Winner: &e%event% &a(%percent%% votes)! Executing now..."
+  cancelled: "%prefix%&aActive Twitch voting session cancelled."
+  no-active-session: "%prefix%&cYou do not have an active voting session to cancel."
+  connected: "%prefix%&aConnected to Twitch channel #%channel%. Starting voting cycle!"
+  player-died: "%prefix%&cYou died! Active Twitch voting session has been cancelled."
+  vote-ended: "%prefix%&aVoting ended! Winner: &e%event% &a(%percent%% votes)! Executing now..."
 
 gui:
   title: "&8Twitch Settings - &5%channel%"
@@ -33,8 +34,8 @@ gui:
   cannot-save-lore2: "&7exceed Interval seconds!"
   close: "&c&lClose"
   close-lore: "&7Click to close without saving."
-  cannot-save-msg: "&c[TwitchVotesMinecraft] Cannot save! Event Seconds (%event%s) + Vote Seconds (%vote%s) = %sum%s, which exceeds Interval Seconds (%interval%s)."
-  saved-msg: "&a[TwitchVotesMinecraft] Default settings successfully saved to config.yml! Starting voting session..."
+  cannot-save-msg: "%prefix%&cCannot save! Event Seconds (%event%s) + Vote Seconds (%vote%s) = %sum%s, which exceeds Interval Seconds (%interval%s)."
+  saved-msg: "%prefix%&aDefault settings successfully saved to config.yml! Starting voting session..."
 
 bossbar:
   voting: "&d&lVoting ends in: &e%time%s"
