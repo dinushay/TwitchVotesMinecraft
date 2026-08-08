@@ -4,6 +4,7 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import twitchvotesminecraft.App;
 
 import java.io.File;
@@ -49,6 +50,13 @@ public class MessageManager {
             for (Map.Entry<String, String> entry : placeholders.entrySet()) {
                 raw = raw.replace(entry.getKey(), entry.getValue());
             }
+        }
+
+        if (raw.contains("%prefix%")) {
+            String prefixString = messageConfig.getString("general.prefix", "");
+            Component prefixComponent = MiniMessage.miniMessage().deserialize(prefixString);
+            raw = raw.replace("%prefix%", "").replace("&", "§");
+            return prefixComponent.append(SERIALIZER.deserialize(raw));
         }
 
         // Replace & with § for legacy color codes
